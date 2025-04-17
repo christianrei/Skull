@@ -27,7 +27,6 @@ playServicesAds = "24.2.0"
 
 coroutines = "1.9.0"
 kotlinx-datetime = "0.6.0"
-# TODO: Update Ktor library to 3.0
 ktor = "3.0.1"
 
 stately = "2.0.6"
@@ -56,9 +55,7 @@ koin = "3.5.3"
 uiGraphics = "1.7.3"
 uiSvg = "1.0.0"
 uuid = "0.8.3"
-# TODO: Update Ktlint when fix is available
 ktlint = "12.1.1"
-# TODO: Update Coil library when Ktor is updated to 3.0
 coil = "3.0.4"
 kotlinx-coroutines = "1.9.0"
 zoomimage = "1.1.0-alpha06"

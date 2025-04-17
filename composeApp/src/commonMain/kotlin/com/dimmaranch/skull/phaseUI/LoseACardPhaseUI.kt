@@ -25,11 +25,14 @@ import com.dimmaranch.skull.state.Phase
 import com.dimmaranch.skull.state.Player
 import com.dimmaranch.skull.commonUI.PokerTable
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.state.GameState
 
 @Composable
 fun LoseACardPhaseUI(
+    gameState: GameState,
     losingPlayer: Player,
     skullOwner: Player,
+    isCurrentUserTurn: Boolean,
     onCardSelected: (String, Int) -> Unit,
     eliminatedPlayers: List<Player>,
     allPlayers: List<Player>
@@ -55,19 +58,14 @@ fun LoseACardPhaseUI(
             bidWinnerId = losingPlayer.id,
             skullOwnerId = skullOwner.id,
             losingPlayerId = losingPlayer.id,
+            placedCards = gameState.placedCards,
+            isCurrentUserTurn = isCurrentUserTurn,
             onCardSelected = onCardSelected
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (losingPlayer.cardsInHand.isNotEmpty()) {
-            Text("${skullOwner.name}, choose a card to remove:", fontWeight = FontWeight.Bold)
-            LazyRow {
-                itemsIndexed(losingPlayer.cardsInHand) { index, card ->
-                    CardView(card, onClick = { onCardSelected(losingPlayer.id, index) })
-                }
-            }
-        } else {
+        if (losingPlayer.cardsInHand.isEmpty()) {
             Text("${losingPlayer.name} has no more cards and is eliminated!", color = Color.Red)
         }
 
@@ -77,19 +75,5 @@ fun LoseACardPhaseUI(
                 Text("- ${player.name}", color = Color.Gray)
             }
         }
-    }
-}
-
-@Composable
-fun CardView(card: Card, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .size(80.dp)
-            .clickable { onClick() }
-            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
-            .background(Color.White),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = card.name, fontWeight = FontWeight.Bold)
     }
 }

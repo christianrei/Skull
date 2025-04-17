@@ -38,7 +38,8 @@ class GameViewModel {
     private val _gameState = MutableStateFlow(GameState())
     val gameState: StateFlow<GameState> = _gameState
 
-    private val _userNameState = MutableStateFlow(generateRandomCode())//TODO PUT BACK TO "" AFTER TESTING
+    private val _userNameState =
+        MutableStateFlow(generateRandomCode())//TODO PUT BACK TO "" AFTER TESTING
     val userNameState: StateFlow<String> = _userNameState
 
     fun handleAction(action: GameAction) {
@@ -268,7 +269,8 @@ class GameViewModel {
             PlayerAction.PLACE_ROSE, PlayerAction.PLACE_SKULL -> {
                 val cardToPlace = if (action == PlayerAction.PLACE_ROSE) Card.ROSE else Card.SKULL
                 val updatedCards = gameState.value.placedCards.toMutableMap()
-                updatedCards[playerId] = updatedCards[playerId].orEmpty() + cardToPlace // Add a new card
+                updatedCards[playerId] =
+                    updatedCards[playerId].orEmpty() + cardToPlace // Add a new card
 
                 val updatedPlayers = updatePlayersAfterTurn(cardToPlace)
                 val allPlayersPlacedAllCards = updatedPlayers?.all { it.cardsInHand.isEmpty() }
@@ -323,9 +325,9 @@ class GameViewModel {
             // Start the challenge phase when the bid reaches the total cards or only one bidder remains
             val currentPlayer = players[gameState.currentBidderIndex]
 
-            val revealed = currentPlayer.cardsPlaced.map { card ->
+            val revealed = gameState.placedCards[currentPlayer.id]?.map { card ->
                 RevealedCard(card = card, playerId = currentPlayer.id)
-            }
+            }.orEmpty()
 
             gameState.copy(
                 players = updatedPlayers,
@@ -359,36 +361,44 @@ class GameViewModel {
         val revealedCard = playerCards[cardIndex]
         val updatedRevealedCards = challenge.revealedCards + revealedCard
 
-        // If the player revealed a Skull, they lose a random card
+        // If the player revealed a Skull, they must lose a card
         if (revealedCard == Card.SKULL) {
-            val updatedPlayers = players.map { player ->
-                if (player.id == currentPlayer.id) player.copy(
-                    cardsInHand = player.cardsInHand.drop(
-                        1
-                    ).toMutableList()
-                )
-                else player
-            }.toPlayerMap()
-
+            println("MEME: SKULL REVEALED")
             return game.copy(
                 phase = Phase.LOSE_A_CARD,
-                players = updatedPlayers,
+                players = returnPlacedCardsToPlayersAndResetBid(game),
                 remainingCardsToReveal = 0,
+                placedCards = emptyMap(),
+                currentPlayerIndex = game.challengedPlayerIndex, //TODO Switch to bidder to mix up and mark done then challenged
                 challengeState = challenge.copy(revealedCards = updatedRevealedCards)
             )
         }
 
         // If they revealed all required Roses, they get a point
         if (updatedRevealedCards.size == game.highestBid) {
+            println("MEME: ALL ROSES REVEALED")
             val updatedPlayers = players.map { player ->
-                if (player.id == currentPlayer.id) player.copy(points = player.points + 1)
-                else player
+                if (player.id == currentPlayer.id) {
+                    // If already have 1 point, this second point makes them win
+                    if (player.points == 1) {
+                        return game.copy(
+                            phase = Phase.END,
+                        )
+                    }
+                    player.copy(points = player.points + 1)
+                } else {
+                    player
+                }
             }.toPlayerMap()
 
             return game.copy(
                 phase = Phase.PLACING_FIRST_CARD,
                 remainingCardsToReveal = 0,
-                players = updatedPlayers
+                players = returnPlacedCardsToPlayersAndResetBid(game.copy(players = updatedPlayers)),
+                currentPlayerIndex = game.currentBidderIndex,
+                challengeState = null,
+                revealedCards = emptyList(),
+                placedCards = emptyMap()
             )
         }
 
@@ -474,6 +484,22 @@ class GameViewModel {
                 players = updatedPlayers,
                 currentPlayerIndex = getNextPlayerIndex()
             )
+        }
+    }
+
+    private fun returnPlacedCardsToPlayersAndResetBid(gameState: GameState): Map<String, Player> {
+        return gameState.players.values.toList().map { player ->
+            val returnedCards = gameState.placedCards[player.id].orEmpty()
+            player.bid = 0
+            player.cardsInHand.addAll(returnedCards)
+            player.copy(cardsInHand = player.cardsInHand)
+        }.toPlayerMap()
+    }
+
+    fun clearGame() {
+        coroutineScope.launch {
+            repository.deleteGameData(gameState.value.roomCode)
+            _gameState.value = GameState()
         }
     }
 

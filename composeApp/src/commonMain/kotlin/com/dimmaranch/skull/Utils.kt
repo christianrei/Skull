@@ -85,7 +85,6 @@ object Utils {
             id = this["id"] as String,
             name = this["name"] as String,
             cardsInHand = this["cardsInHand"] as MutableList<Card>, // to enum Card
-            cardsPlaced = this["cardsPlaced"] as MutableList<Card>,
         )
     }
 

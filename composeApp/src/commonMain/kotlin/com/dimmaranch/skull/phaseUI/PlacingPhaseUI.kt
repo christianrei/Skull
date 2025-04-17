@@ -1,6 +1,13 @@
 package com.dimmaranch.skull.phaseUI
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,23 +17,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dimmaranch.skull.commonUI.BidStepper
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.Card
 import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.state.GameState
-import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.isCurrentUserPlayer
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
-import org.jetbrains.compose.resources.ExperimentalResourceApi
+import com.dimmaranch.skull.viewmodel.GameViewModel
+import org.jetbrains.compose.resources.painterResource
 import skull.composeapp.generated.resources.Res
-import skull.composeapp.generated.resources.compose_multiplatform
+import skull.composeapp.generated.resources.blueback
+import skull.composeapp.generated.resources.blueskull
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false) {
     val gameState: GameState by viewModel.gameState.collectAsState()
@@ -34,7 +38,6 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
     val players = gameState.players.values.toList()
     val isCurrentTurn = gameState.isCurrentUserPlayer(viewModel.getCurrentUserId().orEmpty())
 
-//    println("MEME: optionClicked: ${optionClicked.value}")
     if (!isPlacingFirstCard) {
         optionClicked.value = false
     }
@@ -43,9 +46,7 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
     } else {
         !optionClicked.value && isCurrentTurn
     }
-//    println("MEME: buttonsEnabled: $buttonsEnabled")
-//    println("MEME: isCurrentTurn: $isCurrentTurn")
-//    println("MEME: isPlacingFirstCard: $isPlacingFirstCard")
+
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -123,29 +124,37 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
             )
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
+
         players.find { it.id == viewModel.getCurrentUserId() }?.let { userPlayer ->
             userPlayer.cardsInHand.forEach { card ->
                 // show the pictures of all the current users cards
-                Text(
-                    text = card.name,
-                    style = defaultTextStyle
-                )
-                KamelImage(
-                    resource = asyncPainterResource(
-                        //data = File("/path/to/image.png")
-                        "https://t4.ftcdn.net/jpg/00/04/09/63/360_F_4096398_nMeewldssGd7guDmvmEDXqPJUmkDWyqA.jpg"
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.fillMaxSize()
-                )
-                Res.drawable.compose_multiplatform
-//                AsyncImage(
-//                    modifier = Modifier.size(100.dp),
-//                    model = Res.getUri("drawable/blueskull.png"),
-//                    contentDescription = card.name,
-//                )
+                Row {
+                    Column {
+                        Text(
+                            text = card.name,
+                            style = defaultTextStyle
+                        )
+                        Image(
+                            painter = if (card == Card.ROSE) painterResource(Res.drawable.blueback) else painterResource(
+                                Res.drawable.blueskull
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier.size(64.dp)
+                        )
+                    }
+                }
             }
         }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = if ((players.firstOrNull { it.id == viewModel.getCurrentUserId() }?.points
+                    ?: 0) > 0
+            ) "You have 1 point. You need 1 more to win!" else "You have 0 points. Get 2 to win.",
+            style = defaultTextStyle,
+            textAlign = TextAlign.Center
+        )
     }
 }

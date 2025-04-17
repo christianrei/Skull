@@ -1,6 +1,7 @@
 package com.dimmaranch.skull.commonUI
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,13 +9,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +39,9 @@ import com.dimmaranch.skull.commonUI.Theme.PokerTableGreen
 import com.dimmaranch.skull.state.Card
 import com.dimmaranch.skull.state.Phase
 import com.dimmaranch.skull.state.Player
+import org.jetbrains.compose.resources.painterResource
+import skull.composeapp.generated.resources.Res
+import skull.composeapp.generated.resources.redback
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -44,6 +54,8 @@ fun PokerTable(
     bidWinnerId: String?,
     skullOwnerId: String?,
     losingPlayerId: String?,
+    isCurrentUserTurn: Boolean,
+    placedCards: Map<String, List<Card>>,
     onCardSelected: (String, Int) -> Unit = { _, _ -> }
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -67,37 +79,75 @@ fun PokerTable(
         }
 
         players.forEachIndexed { index, player ->
-            val angle = (360f / players.size) * index - 90f // Make top the 0°
-            val radians = angle * (PI / 180) // Kotlin multiplatform way
+            val angle = (360f / players.size) * index - 90f
+            val radians = angle * (PI / 180)
 
             val radiusDp = 150.dp
             val offset = with(density) { radiusDp.toPx() }
             val x = cos(radians) * offset
             val y = sin(radians) * offset
 
-            Box(
-                modifier = Modifier
-                    .offset { IntOffset(x.roundToInt(), y.roundToInt()) }
-                    .border(
-                        2.dp,
-                        if (player.id == bidWinnerId && currentPhase == Phase.CHALLENGING) Color.Yellow
-                        else Color.Transparent
-                    )
-                    .padding(4.dp)
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = player.name, color = Color.White)
-                    Row {
-                        // Cards placed can be tapped in not already revealed
-                        player.cardsPlaced.forEachIndexed { idx, card ->
-                            CardView(card, player.id == losingPlayerId && skullOwnerId == bidWinnerId) {
-                                onCardSelected.invoke(player.id, idx)
+            val isLosingPlayer = player.id == losingPlayerId
+            val isSkullOwner = player.id == skullOwnerId
+            val showLosingCardsInCenter = currentPhase == Phase.LOSE_A_CARD && isLosingPlayer
+
+            if (!showLosingCardsInCenter) {
+                Box(
+                    modifier = Modifier
+                        .offset { IntOffset(x.roundToInt(), y.roundToInt()) }
+                        .border(
+                            2.dp,
+                            if (player.id == bidWinnerId && currentPhase == Phase.CHALLENGING) Color.Yellow
+                            else Color.Transparent
+                        )
+                        .padding(4.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = player.name, color = Color.White)
+                            if (player.points == 1) {
+                                Icon(
+                                    imageVector = Icons.Default.Star, // Change to a cooler icon if desired
+                                    contentDescription = "1 point",
+                                    tint = Color.Magenta,
+                                    modifier = Modifier.size(24.dp).padding(start = 4.dp)
+                                )
                             }
                         }
-                        // cards in hand should just be a pile thats not interactable
-//                        player.cardsInHand.forEachIndexed { idx, card ->
-//                            CardView(card, player.id == losingPlayerId && skullOwnerId == bidWinnerId) {}
-//                        }
+
+                        // Placed cards on the table (hidden or shown based on phase)
+                        Row {
+                            placedCards[player.id]?.forEachIndexed { idx, card ->
+                                CardView(card, isCurrentUserTurn) {
+                                    onCardSelected.invoke(player.id, idx)
+                                }
+                            }
+                        }
+
+                        if (player.cardsInHand.isNotEmpty()) {
+                            // One face-down card to symbolize hand
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Image(
+                                painter = painterResource(Res.drawable.redback),
+                                contentDescription = null,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // Show losing player's cards in center if in LOSING_CARD phase
+        if (currentPhase == Phase.LOSE_A_CARD && losingPlayerId != null && skullOwnerId != null) {
+            val cards = placedCards[losingPlayerId] ?: emptyList()
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Choose a card to discard", color = Color.Red)
+                Row {
+                    cards.forEachIndexed { idx, card ->
+                        CardView(card, isCurrentUserTurn) {
+                            onCardSelected.invoke(losingPlayerId, idx)
+                        }
                     }
                 }
             }
@@ -116,8 +166,19 @@ fun CardView(card: Card, isSelectable: Boolean, onClick: () -> Unit) {
             .background(if (isSelectable) Color.Gray else Color.Transparent)
             .clickable(enabled = isSelectable) { showConfirmation = true }
     ) {
+        Image(
+            painter = painterResource(Res.drawable.redback),
+            contentDescription = null,
+            modifier = Modifier.size(32.dp)
+        )
         if (showConfirmation) {
-            ConfirmationDialog(onConfirm = onClick, onDismiss = { showConfirmation = false })
+            ConfirmationDialog(
+                onConfirm = {
+                    showConfirmation = false
+                    onClick.invoke()
+                },
+                onDismiss = { showConfirmation = false }
+            )
         }
     }
 }

@@ -90,7 +90,10 @@ fun AppNavigation(gameVM: GameViewModel) {
             )
         }
         composable(NavRoute.START) {
-            GameScreen(viewModel = gameVM)
+            GameScreen(
+                viewModel = gameVM,
+                onEndGame = { navController.navigate(NavRoute.HOME) }
+            )
         }
         composable(NavRoute.SETTINGS) {
             SettingsScreen(

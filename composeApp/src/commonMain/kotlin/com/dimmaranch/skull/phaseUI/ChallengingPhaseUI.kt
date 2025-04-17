@@ -21,6 +21,7 @@ fun ChallengingPhaseUI(
     players: List<Player>,
     losingPlayer: Player,
     skullOwner: Player,
+    isCurrentUserTurn: Boolean,
     onAnimationEnded: () -> Unit,
     onCardSelected: (playerId: String, cardIndex: Int) -> Unit
 ) {
@@ -44,6 +45,8 @@ fun ChallengingPhaseUI(
             bidWinnerId = losingPlayer.id,
             skullOwnerId = skullOwner.id,
             losingPlayerId = losingPlayer.id,
+            placedCards = gameState.placedCards,
+            isCurrentUserTurn = isCurrentUserTurn,
             onCardSelected = onCardSelected
         )
     }

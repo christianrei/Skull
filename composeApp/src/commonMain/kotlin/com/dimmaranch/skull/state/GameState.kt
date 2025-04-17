@@ -10,7 +10,6 @@ data class Player(
     val id: String = "",
     val name: String,
     val cardsInHand: MutableList<Card> = Utils.buildHand(),
-    val cardsPlaced: MutableList<Card> = mutableListOf(),
     var bid: Int = 0,
     var points: Int = 0,
     val hasPassedTurn: Boolean = false,
@@ -80,9 +79,11 @@ fun GameState.isUserRoomHost(userPlayerId: String): Boolean {
 }
 
 fun GameState.isCurrentUserPlayer(userPlayerId: String): Boolean {
+    if (this.players.isEmpty()) return false
     return this.players.values.toList()[this.currentPlayerIndex].id == userPlayerId
 }
 
 fun GameState.isCurrentUserPlayer(viewModel: GameViewModel): Boolean {
+    if (this.players.isEmpty()) return false
     return this.players.values.toList()[this.currentPlayerIndex].id == viewModel.getCurrentUserId().orEmpty()
 }
