@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.phaseUI
+package com.dimmaranch.skull.phaseUI
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.dimmaranch.skulls.state.Card
-import com.dimmaranch.skulls.state.Phase
-import com.dimmaranch.skulls.state.Player
-import com.dimmaranch.skulls.commonUI.PokerTable
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.state.Card
+import com.dimmaranch.skull.state.Phase
+import com.dimmaranch.skull.state.Player
+import com.dimmaranch.skull.commonUI.PokerTable
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 
 @Composable
 fun LoseACardPhaseUI(

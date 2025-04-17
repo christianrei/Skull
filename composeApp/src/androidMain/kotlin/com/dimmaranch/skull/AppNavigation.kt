@@ -7,18 +7,18 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.dimmaranch.skulls.screen.CreateRoomScreen
-import com.dimmaranch.skulls.state.GameAction
-import com.dimmaranch.skulls.screen.GameScreen
-import com.dimmaranch.skulls.state.GameState
+import com.dimmaranch.skull.screen.CreateRoomScreen
+import com.dimmaranch.skull.state.GameAction
+import com.dimmaranch.skull.screen.GameScreen
+import com.dimmaranch.skull.state.GameState
 import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skulls.screen.HomeScreen
-import com.dimmaranch.skulls.screen.JoinRoomScreen
-import com.dimmaranch.skulls.state.Phase
-import com.dimmaranch.skulls.screen.RoomOptionsScreen
-import com.dimmaranch.skulls.screen.RulesScreen
-import com.dimmaranch.skulls.screen.SettingsScreen
-import com.dimmaranch.skulls.state.isUserRoomHost
+import com.dimmaranch.skull.screen.HomeScreen
+import com.dimmaranch.skull.screen.JoinRoomScreen
+import com.dimmaranch.skull.state.Phase
+import com.dimmaranch.skull.screen.RoomOptionsScreen
+import com.dimmaranch.skull.screen.RulesScreen
+import com.dimmaranch.skull.screen.SettingsScreen
+import com.dimmaranch.skull.state.isUserRoomHost
 
 object NavRoute {
     const val HOME = "home"

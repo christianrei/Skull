@@ -1,6 +1,5 @@
 package com.dimmaranch.skull
 
-import com.dimmaranch.skulls.AdManager
 import platform.UIKit.UIViewController
 //import cocoapods.GoogleMobileAds.*
 

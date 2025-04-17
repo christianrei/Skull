@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.screen
+package com.dimmaranch.skull.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

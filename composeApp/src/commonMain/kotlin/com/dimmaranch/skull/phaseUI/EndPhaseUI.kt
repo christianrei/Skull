@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.phaseUI
+package com.dimmaranch.skull.phaseUI
 
 import androidx.compose.runtime.Composable
 import com.dimmaranch.skull.viewmodel.GameViewModel

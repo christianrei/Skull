@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.screen
+package com.dimmaranch.skull.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skulls.commonUI.Theme.SecondaryText
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
-import com.dimmaranch.skulls.state.Player
+import com.dimmaranch.skull.commonUI.Theme.SecondaryText
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.state.Player
 
 @Composable
 fun CreateRoomScreen(

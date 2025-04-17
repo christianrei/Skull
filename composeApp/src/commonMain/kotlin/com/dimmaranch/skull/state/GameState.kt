@@ -1,6 +1,6 @@
-package com.dimmaranch.skulls.state
+package com.dimmaranch.skull.state
 
-import com.dimmaranch.skulls.Utils
+import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.viewmodel.GameViewModel
 import kotlinx.serialization.Serializable
 

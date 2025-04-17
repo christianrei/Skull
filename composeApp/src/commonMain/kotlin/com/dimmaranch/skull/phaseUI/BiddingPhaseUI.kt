@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.phaseUI
+package com.dimmaranch.skull.phaseUI
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -7,11 +7,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.dimmaranch.skulls.commonUI.BidStepper
-import com.dimmaranch.skulls.state.GameAction
+import com.dimmaranch.skull.commonUI.BidStepper
+import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
-import com.dimmaranch.skulls.state.isCurrentUserPlayer
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.state.isCurrentUserPlayer
 
 @Composable
 fun BiddingPhaseUI(viewModel: GameViewModel) {

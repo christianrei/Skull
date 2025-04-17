@@ -8,7 +8,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.dimmaranch.skulls.AdManager
 
 actual fun getCustomFontFamily(): FontFamily {
     return FontFamily(

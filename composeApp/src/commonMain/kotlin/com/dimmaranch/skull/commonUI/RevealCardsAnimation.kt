@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.commonUI
+package com.dimmaranch.skull.commonUI
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dimmaranch.skulls.state.RevealedCard
+import com.dimmaranch.skull.state.RevealedCard
 import kotlinx.coroutines.delay
 
 @Composable

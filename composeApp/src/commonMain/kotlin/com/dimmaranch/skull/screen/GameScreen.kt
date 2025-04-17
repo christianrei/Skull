@@ -1,17 +1,17 @@
-package com.dimmaranch.skulls.screen
+package com.dimmaranch.skull.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.dimmaranch.skulls.phaseUI.EndPhaseUI
-import com.dimmaranch.skulls.state.GameAction
+import com.dimmaranch.skull.phaseUI.EndPhaseUI
+import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skulls.phaseUI.BiddingPhaseUI
-import com.dimmaranch.skulls.phaseUI.ChallengingPhaseUI
-import com.dimmaranch.skulls.phaseUI.LoseACardPhaseUI
+import com.dimmaranch.skull.phaseUI.BiddingPhaseUI
+import com.dimmaranch.skull.phaseUI.ChallengingPhaseUI
+import com.dimmaranch.skull.phaseUI.LoseACardPhaseUI
 import com.dimmaranch.skull.phaseUI.PlacingPhaseUI
-import com.dimmaranch.skulls.state.GameState
-import com.dimmaranch.skulls.state.Phase
+import com.dimmaranch.skull.state.GameState
+import com.dimmaranch.skull.state.Phase
 
 @Composable
 fun GameScreen(viewModel: GameViewModel) {

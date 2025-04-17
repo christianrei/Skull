@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.state
+package com.dimmaranch.skull.state
 
 sealed class GameAction {
     data class PlaceCard(val card: Card, val isPlacingFirstCard: Boolean) : GameAction()

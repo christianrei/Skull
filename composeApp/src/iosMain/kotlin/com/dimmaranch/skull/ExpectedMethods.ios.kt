@@ -2,7 +2,6 @@ package com.dimmaranch.skull
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
-import com.dimmaranch.skulls.AdManager
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIViewController
 

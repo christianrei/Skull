@@ -3,7 +3,6 @@ package com.dimmaranch.skull
 import android.app.Activity
 import android.content.Context
 import android.widget.FrameLayout
-import com.dimmaranch.skulls.AdManager
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback

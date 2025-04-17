@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.commonUI
+package com.dimmaranch.skull.commonUI
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle

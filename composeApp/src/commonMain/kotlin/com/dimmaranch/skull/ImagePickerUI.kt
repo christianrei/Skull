@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls
+package com.dimmaranch.skull
 
 import androidx.compose.runtime.Composable
 

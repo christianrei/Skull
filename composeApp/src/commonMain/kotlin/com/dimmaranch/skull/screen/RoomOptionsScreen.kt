@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.screen
+package com.dimmaranch.skull.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skulls.commonUI.PlayerNameTextField
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
-import com.dimmaranch.skulls.Utils
+import com.dimmaranch.skull.commonUI.PlayerNameTextField
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.Utils
 
 @Composable
 fun RoomOptionsScreen(gameVM: GameViewModel, navigateToCreate: (String) -> Unit, navigateToJoin: (String) -> Unit) {

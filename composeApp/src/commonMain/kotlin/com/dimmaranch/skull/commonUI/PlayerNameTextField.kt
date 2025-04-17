@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.commonUI
+package com.dimmaranch.skull.commonUI
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,8 +16,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dimmaranch.skull.viewmodel.GameViewModel
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
-import com.dimmaranch.skulls.Utils.NAME_MAX_LENGTH
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.Utils.NAME_MAX_LENGTH
 
 @Composable
 fun PlayerNameTextField(gameVM: GameViewModel) {

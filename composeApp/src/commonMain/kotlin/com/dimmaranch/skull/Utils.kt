@@ -1,9 +1,9 @@
-package com.dimmaranch.skulls
+package com.dimmaranch.skull
 
-import com.dimmaranch.skulls.state.Card
-import com.dimmaranch.skulls.state.GameState
-import com.dimmaranch.skulls.state.Phase
-import com.dimmaranch.skulls.state.Player
+import com.dimmaranch.skull.state.Card
+import com.dimmaranch.skull.state.GameState
+import com.dimmaranch.skull.state.Phase
+import com.dimmaranch.skull.state.Player
 import kotlin.math.PI
 
 object Utils {

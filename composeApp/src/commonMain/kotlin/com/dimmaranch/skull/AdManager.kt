@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls
+package com.dimmaranch.skull
 
 interface AdManager {
     fun loadBannerAd()

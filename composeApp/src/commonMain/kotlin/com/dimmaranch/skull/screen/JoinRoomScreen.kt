@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.screen
+package com.dimmaranch.skull.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,9 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dimmaranch.skulls.commonUI.Theme
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
-import com.dimmaranch.skulls.Utils
+import com.dimmaranch.skull.commonUI.Theme
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.Utils
 
 @Composable
 fun JoinRoomScreen(

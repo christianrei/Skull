@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.phaseUI
+package com.dimmaranch.skull.phaseUI
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,11 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dimmaranch.skulls.state.GameState
-import com.dimmaranch.skulls.state.Player
-import com.dimmaranch.skulls.commonUI.PokerTable
-import com.dimmaranch.skulls.commonUI.RevealCardsAnimation
-import com.dimmaranch.skulls.commonUI.Theme.defaultTextStyle
+import com.dimmaranch.skull.state.GameState
+import com.dimmaranch.skull.state.Player
+import com.dimmaranch.skull.commonUI.PokerTable
+import com.dimmaranch.skull.commonUI.RevealCardsAnimation
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 
 @Composable
 fun ChallengingPhaseUI(

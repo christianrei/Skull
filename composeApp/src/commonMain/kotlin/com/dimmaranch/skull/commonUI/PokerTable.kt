@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.commonUI
+package com.dimmaranch.skull.commonUI
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -28,10 +28,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.dimmaranch.skulls.commonUI.Theme.PokerTableGreen
-import com.dimmaranch.skulls.state.Card
-import com.dimmaranch.skulls.state.Phase
-import com.dimmaranch.skulls.state.Player
+import com.dimmaranch.skull.commonUI.Theme.PokerTableGreen
+import com.dimmaranch.skull.state.Card
+import com.dimmaranch.skull.state.Phase
+import com.dimmaranch.skull.state.Player
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToInt

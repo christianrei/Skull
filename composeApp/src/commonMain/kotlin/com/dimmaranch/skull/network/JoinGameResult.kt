@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.network
+package com.dimmaranch.skull.network
 
 sealed class JoinGameResult {
     object Success : JoinGameResult()

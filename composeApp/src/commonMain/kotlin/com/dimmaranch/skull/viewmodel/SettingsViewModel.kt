@@ -1,4 +1,4 @@
-package com.dimmaranch.skulls.viewmodel
+package com.dimmaranch.skull.viewmodel
 
 //class SettingsViewModel(private val imagePicker: ImagePicker) {
 //    private val _skullImage = MutableStateFlow<ByteArray?>(null)

@@ -1,6 +1,6 @@
-package com.dimmaranch.skulls.network
+package com.dimmaranch.skull.network
 
-import com.dimmaranch.skulls.state.Player
+import com.dimmaranch.skull.state.Player
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.database.FirebaseDatabase
