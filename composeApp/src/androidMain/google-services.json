@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "30067668519",
+    "firebase_url": "https://skulls-d7a17-default-rtdb.firebaseio.com",
+    "project_id": "skulls-d7a17",
+    "storage_bucket": "skulls-d7a17.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30067668519:android:794e4c8ccc746867a48002",
+        "android_client_info": {
+          "package_name": "com.dimmaranch.skull"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqby5uP1-OmYkVJ-QAHGeqDL5OGDSCCS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30067668519:android:886931307cd28de2a48002",
+        "android_client_info": {
+          "package_name": "com.dimmaranch.skulls.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqby5uP1-OmYkVJ-QAHGeqDL5OGDSCCS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
