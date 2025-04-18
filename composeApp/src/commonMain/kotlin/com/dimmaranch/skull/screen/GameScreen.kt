@@ -51,7 +51,7 @@ fun GameScreen(
         Phase.LOSE_A_CARD -> {
             LoseACardPhaseUI(
                 gameState = gameState,
-                losingPlayer = players[gameState.currentPlayerIndex],
+                losingPlayer = players[gameState.currentBidderIndex], //currentPlayerIndex is for the skullOwner?
                 skullOwner = players[gameState.challengedPlayerIndex],
                 isCurrentUserTurn = isCurrentUserTurn,
                 onCardSelected = { playerId, cardIndex ->

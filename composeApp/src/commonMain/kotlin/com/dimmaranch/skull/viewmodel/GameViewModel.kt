@@ -305,6 +305,7 @@ class GameViewModel {
                     phase = Phase.BIDDING,
                     highestBid = bidAmount,
                     players = updatedPlayers,
+                    currentBidderIndex = gameState.value.currentPlayerIndex,
                     currentPlayerIndex = getNextPlayerIndex(),
                 )
                 return checkForChallengeStart(updatedGameState)
@@ -367,9 +368,10 @@ class GameViewModel {
             return game.copy(
                 phase = Phase.LOSE_A_CARD,
                 players = returnPlacedCardsToPlayersAndResetBid(game),
+                challengedPlayerIndex = players.indexOf(currentPlayer),
                 remainingCardsToReveal = 0,
                 placedCards = emptyMap(),
-                currentPlayerIndex = game.challengedPlayerIndex, //TODO Switch to bidder to mix up and mark done then challenged
+                currentPlayerIndex = players.indexOf(currentPlayer), //TODO Switch to bidder to mix up and mark done then challenged
                 challengeState = challenge.copy(revealedCards = updatedRevealedCards)
             )
         }
@@ -394,8 +396,10 @@ class GameViewModel {
             return game.copy(
                 phase = Phase.PLACING_FIRST_CARD,
                 remainingCardsToReveal = 0,
+                challengedPlayerIndex = players.indexOf(currentPlayer),
                 players = returnPlacedCardsToPlayersAndResetBid(game.copy(players = updatedPlayers)),
                 currentPlayerIndex = game.currentBidderIndex,
+//                currentBidderIndex = 0,
                 challengeState = null,
                 revealedCards = emptyList(),
                 placedCards = emptyMap()
@@ -404,6 +408,7 @@ class GameViewModel {
 
         return game.copy(
             remainingCardsToReveal = game.remainingCardsToReveal - 1,
+            currentPlayerIndex = players.indexOf(currentPlayer),
             challengeState = challenge.copy(revealedCards = updatedRevealedCards)
         )
     }
