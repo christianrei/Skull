@@ -61,7 +61,7 @@ fun RevealCardsAnimation(
                         },
                         back = {
                             //TODO Fix this with revealed = true not isSelectable
-                            CardView(card = revealed.card, true, onClick = {})
+                            CardView(card = revealed.card, false, onClick = {})
                         },
                         flip = flipAllCards
                     )

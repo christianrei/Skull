@@ -42,9 +42,9 @@ fun ChallengingPhaseUI(
         PokerTable(
             players = gameState.players.values.toList(),
             currentPhase = gameState.phase,
-            bidWinnerId = losingPlayer.id,
-            skullOwnerId = skullOwner.id,
-            losingPlayerId = losingPlayer.id,
+            bidWinner = losingPlayer,
+            skullOwner = skullOwner,
+            losingPlayer = losingPlayer,
             placedCards = gameState.placedCards,
             isCurrentUserTurn = isCurrentUserTurn,
             onCardSelected = onCardSelected

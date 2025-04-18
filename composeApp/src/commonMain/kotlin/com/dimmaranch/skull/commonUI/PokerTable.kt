@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -36,11 +37,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.dimmaranch.skull.commonUI.Theme.PokerTableGreen
+import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.Card
 import com.dimmaranch.skull.state.Phase
 import com.dimmaranch.skull.state.Player
 import org.jetbrains.compose.resources.painterResource
 import skull.composeapp.generated.resources.Res
+import skull.composeapp.generated.resources.blueskull
 import skull.composeapp.generated.resources.redback
 import kotlin.math.PI
 import kotlin.math.cos
@@ -51,9 +54,9 @@ import kotlin.math.sin
 fun PokerTable(
     players: List<Player>,
     currentPhase: Phase,
-    bidWinnerId: String?,
-    skullOwnerId: String?,
-    losingPlayerId: String?,
+    bidWinner: Player?,
+    skullOwner: Player?,
+    losingPlayer: Player?,
     isCurrentUserTurn: Boolean,
     placedCards: Map<String, List<Card>>,
     onCardSelected: (String, Int) -> Unit = { _, _ -> }
@@ -87,8 +90,8 @@ fun PokerTable(
             val x = cos(radians) * offset
             val y = sin(radians) * offset
 
-            val isLosingPlayer = player.id == losingPlayerId
-            val isSkullOwner = player.id == skullOwnerId
+            val isLosingPlayer = player.id == losingPlayer?.id
+            val isSkullOwner = player.id == skullOwner?.id
             val showLosingCardsInCenter = currentPhase == Phase.LOSE_A_CARD && isLosingPlayer
 
             if (!showLosingCardsInCenter) {
@@ -97,10 +100,10 @@ fun PokerTable(
                         .offset { IntOffset(x.roundToInt(), y.roundToInt()) }
                         .border(
                             2.dp,
-                            if (player.id == bidWinnerId && currentPhase == Phase.CHALLENGING) Color.Yellow
+                            if (player.id == bidWinner?.id && currentPhase == Phase.CHALLENGING) Color.Red
                             else Color.Transparent
                         )
-                        .padding(4.dp)
+                        .padding(8.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -139,15 +142,26 @@ fun PokerTable(
         }
 
         // Show losing player's cards in center if in LOSING_CARD phase
-        if (currentPhase == Phase.LOSE_A_CARD && losingPlayerId != null && skullOwnerId != null) {
-            val cards = placedCards[losingPlayerId] ?: emptyList()
+        if (currentPhase == Phase.LOSE_A_CARD && losingPlayer?.id != null && skullOwner?.id != null) {
+            val cards = losingPlayer?.cardsInHand ?: emptyList()
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Choose a card to discard", color = Color.Red)
-                Row {
+                Text(
+                    text = if (isCurrentUserTurn) "Tap a card to discard from ${losingPlayer?.name}" else "${losingPlayer?.name} is discarding...",
+                    color = Color.Red,
+                    style = defaultTextStyle,
+                    modifier = Modifier.padding(8.dp)
+                )
+
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     cards.forEachIndexed { idx, card ->
-                        CardView(card, isCurrentUserTurn) {
-                            onCardSelected.invoke(losingPlayerId, idx)
-                        }
+                        CardView(
+                            card = card,
+                            isFaceUp = false, //skullOwner?.id == currentPlayer.id,
+                            isSelectable = isCurrentUserTurn,
+                            onClick = {
+                                onCardSelected.invoke(losingPlayer.id, idx)
+                            }
+                        )
                     }
                 }
             }
@@ -157,17 +171,29 @@ fun PokerTable(
 
 
 @Composable
-fun CardView(card: Card, isSelectable: Boolean, onClick: () -> Unit) {
+fun CardView(
+    card: Card,
+    isSelectable: Boolean,
+    isFaceUp: Boolean = false,
+    onClick: (() -> Unit)? = null
+) {
     var showConfirmation by remember { mutableStateOf(false) }
+    val cardImage = if (isFaceUp) painterResource(Res.drawable.blueskull) else painterResource(Res.drawable.redback)
+    val clickableModifier = if (isSelectable) {
+        PulsingBorder().clickable { onClick?.invoke() }
+    } else {
+        Modifier
+    }
 
     Box(
-        modifier = Modifier
-            .size(60.dp)
-            .background(if (isSelectable) Color.Gray else Color.Transparent)
+        contentAlignment = Alignment.Center,
+        modifier = clickableModifier
+            .size(40.dp)
+            .let { if (onClick != null) it.clickable { onClick() } else it }
             .clickable(enabled = isSelectable) { showConfirmation = true }
     ) {
         Image(
-            painter = painterResource(Res.drawable.redback),
+            painter = cardImage,
             contentDescription = null,
             modifier = Modifier.size(32.dp)
         )
@@ -175,7 +201,7 @@ fun CardView(card: Card, isSelectable: Boolean, onClick: () -> Unit) {
             ConfirmationDialog(
                 onConfirm = {
                     showConfirmation = false
-                    onClick.invoke()
+                    onClick?.invoke()
                 },
                 onDismiss = { showConfirmation = false }
             )

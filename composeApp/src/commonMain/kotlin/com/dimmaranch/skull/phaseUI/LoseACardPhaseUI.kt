@@ -56,9 +56,9 @@ fun LoseACardPhaseUI(
         PokerTable(
             players = allPlayers,
             currentPhase = Phase.LOSE_A_CARD,
-            bidWinnerId = losingPlayer.id,
-            skullOwnerId = skullOwner.id,
-            losingPlayerId = losingPlayer.id,
+            bidWinner = losingPlayer,
+            skullOwner = skullOwner,
+            losingPlayer = losingPlayer,
             placedCards = gameState.placedCards,
             isCurrentUserTurn = isCurrentUserTurn,
             onCardSelected = onCardSelected

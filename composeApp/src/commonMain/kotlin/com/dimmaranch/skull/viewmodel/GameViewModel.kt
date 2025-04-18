@@ -438,7 +438,7 @@ class GameViewModel {
         }
 
         // Check if only one player remains → Declare winner
-        val nextPhase = if (updatedPlayers.size == 1) Phase.END else currentState.phase
+        val nextPhase = if (updatedPlayers.size == 1) Phase.END else Phase.PLACING_FIRST_CARD
 
         return currentState.copy(players = updatedPlayers.toPlayerMap(), phase = nextPhase)
     }

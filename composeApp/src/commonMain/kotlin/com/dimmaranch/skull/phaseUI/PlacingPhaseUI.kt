@@ -19,8 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.commonUI.BidStepper
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.Card
@@ -56,9 +58,10 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
         if (isPlacingFirstCard) {
             // Can even put the names of the players you are waiting on here
             Text(
-                text = "Waiting for other players to place cards...",
+                text = if (optionClicked.value) "Waiting for other players to place cards..." else "Place a Rose or Skull to get the round started!",
                 textAlign = TextAlign.Center,
-                style = defaultTextStyle
+                style = defaultTextStyle,
+                color = Color.Yellow,
             )
         } else {
             Text(
@@ -129,6 +132,7 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
         Spacer(modifier = Modifier.height(24.dp))
 
         players.find { it.id == viewModel.getCurrentUserId() }?.let { userPlayer ->
+            val playerIndex = players.indexOf(userPlayer)
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -137,18 +141,18 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    if (userPlayer.cardsInHand.size > 0) CardImageWithText(userPlayer.cardsInHand[0])
+                    if (userPlayer.cardsInHand.size > 0) CardImageWithText(userPlayer.cardsInHand[0], playerIndex)
                     Spacer(modifier = Modifier.height(16.dp))
-                    if (userPlayer.cardsInHand.size > 1) CardImageWithText(userPlayer.cardsInHand[1])
+                    if (userPlayer.cardsInHand.size > 1) CardImageWithText(userPlayer.cardsInHand[1], playerIndex)
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    if (userPlayer.cardsInHand.size > 2) CardImageWithText(userPlayer.cardsInHand[2])
+                    if (userPlayer.cardsInHand.size > 2) CardImageWithText(userPlayer.cardsInHand[2], playerIndex)
                     Spacer(modifier = Modifier.height(16.dp))
-                    if (userPlayer.cardsInHand.size > 3) CardImageWithText(userPlayer.cardsInHand[3])
+                    if (userPlayer.cardsInHand.size > 3) CardImageWithText(userPlayer.cardsInHand[3], playerIndex)
                 }
             }
         }
@@ -166,12 +170,16 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
 }
 
 @Composable
-fun CardImageWithText(card: Card) {
+fun CardImageWithText(
+    card: Card,
+    playerIndex: Int = 0
+) {
     Text(
         text = card.name,
         style = defaultTextStyle,
         textAlign = TextAlign.Center
     )
+    val image = Utils.mapPlayerIndexToDrawable(playerIndex, card == Card.SKULL, card == Card.ROSE)
     Image(
         painter = if (card == Card.ROSE) painterResource(Res.drawable.blueback) else painterResource(
             Res.drawable.blueskull
