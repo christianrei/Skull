@@ -1,6 +1,7 @@
 package com.dimmaranch.skull.phaseUI
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -129,19 +130,26 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
         players.find { it.id == viewModel.getCurrentUserId() }?.let { userPlayer ->
             userPlayer.cardsInHand.forEach { card ->
                 // show the pictures of all the current users cards
-                Row {
-                    Column {
-                        Text(
-                            text = card.name,
-                            style = defaultTextStyle
-                        )
-                        Image(
-                            painter = if (card == Card.ROSE) painterResource(Res.drawable.blueback) else painterResource(
-                                Res.drawable.blueskull
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier.size(64.dp)
-                        )
+                for (rowIndex in 0 until 2) {
+                    Row {
+                        for (colIndex in 0 until 2) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(
+                                    text = card.name,
+                                    style = defaultTextStyle
+                                )
+                                Image(
+                                    painter = if (card == Card.ROSE) painterResource(Res.drawable.blueback) else painterResource(
+                                        Res.drawable.blueskull
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(64.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }

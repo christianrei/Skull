@@ -16,7 +16,6 @@ import com.google.firebase.FirebaseApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Firebase.initialize(this)
         FirebaseApp.initializeApp(this)
         val viewModel = GameViewModel()
         installSplashScreen()

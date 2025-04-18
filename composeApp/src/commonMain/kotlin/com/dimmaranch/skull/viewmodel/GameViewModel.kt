@@ -285,7 +285,7 @@ class GameViewModel {
             }
 
             PlayerAction.START_BIDDING -> {
-                if (gameState.value.players.values.toList()[gameState.value.currentBidderIndex].id != playerId) return gameState.value
+//                if (gameState.value.players.values.toList()[gameState.value.currentBidderIndex].id != playerId) return gameState.value
 
                 val minBid = 1
                 val maxBid = gameState.value.placedCards.values.sumOf { it.size }
