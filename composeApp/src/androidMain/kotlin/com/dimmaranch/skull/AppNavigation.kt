@@ -34,6 +34,7 @@ object NavRoute {
 fun AppNavigation(gameVM: GameViewModel) {
     val navController = rememberNavController()
 
+    //TODO Add bottom section ads for all screens except GameScreen
     NavHost(navController = navController, startDestination = NavRoute.HOME) {
         composable(NavRoute.HOME) {
             gameVM.signInAnon()

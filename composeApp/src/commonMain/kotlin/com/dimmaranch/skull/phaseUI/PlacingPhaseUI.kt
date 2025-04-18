@@ -164,7 +164,6 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
                     ?: 0) > 0
             ) "You have 1 point. You need 1 more to win!" else "You have 0 points. Get 2 to win.",
             style = defaultTextStyle,
-            textAlign = TextAlign.Center
         )
     }
 }
@@ -177,13 +176,10 @@ fun CardImageWithText(
     Text(
         text = card.name,
         style = defaultTextStyle,
-        textAlign = TextAlign.Center
     )
     val image = Utils.mapPlayerIndexToDrawable(playerIndex, card == Card.SKULL, card == Card.ROSE)
     Image(
-        painter = if (card == Card.ROSE) painterResource(Res.drawable.blueback) else painterResource(
-            Res.drawable.blueskull
-        ),
+        painter = painterResource(image),
         contentDescription = null,
         modifier = Modifier.size(64.dp)
     )

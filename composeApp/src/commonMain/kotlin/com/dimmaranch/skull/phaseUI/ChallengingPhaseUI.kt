@@ -52,6 +52,7 @@ fun ChallengingPhaseUI(
     }
     RevealCardsAnimation(
         revealedCards = gameState.revealedCards,
+        playerIndex = gameState.challengedPlayerIndex,
         onAnimationEnd = onAnimationEnded
     )
 }

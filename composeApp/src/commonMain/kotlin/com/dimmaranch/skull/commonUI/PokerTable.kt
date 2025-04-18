@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
@@ -34,8 +35,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.commonUI.Theme.PokerTableGreen
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.Card
@@ -118,11 +122,38 @@ fun PokerTable(
                             }
                         }
 
-                        // Placed cards on the table (hidden or shown based on phase)
-                        Row {
-                            placedCards[player.id]?.forEachIndexed { idx, card ->
-                                CardView(card, isCurrentUserTurn) {
-                                    onCardSelected.invoke(player.id, idx)
+                        // Stacked placed cards (only top card is clickable)
+                        placedCards[player.id]?.let { cards ->
+                            if (cards.isNotEmpty()) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    // Only top card is shown & clickable
+                                    CardView(
+                                        card = cards.last(),
+                                        playerIndex = players.indexOf(player),
+                                        isFaceUp = false, // Show as face down until revealed
+                                        isSelectable = isCurrentUserTurn && currentPhase == Phase.CHALLENGING,
+                                        onClick = {
+                                            onCardSelected.invoke(player.id, cards.lastIndex)
+                                        }
+                                    )
+
+                                    // Stack size indicator
+                                    if (cards.size > 1) {
+                                        Box(
+                                            modifier = Modifier
+                                                .align(Alignment.TopEnd)
+                                                .offset(x = 8.dp, y = (-8).dp)
+                                                .background(Color.Red, CircleShape)
+                                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                                        ) {
+                                            Text(
+                                                text = "${cards.size}",
+                                                color = Color.White,
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -131,7 +162,7 @@ fun PokerTable(
                             // One face-down card to symbolize hand
                             Spacer(modifier = Modifier.height(4.dp))
                             Image(
-                                painter = painterResource(Res.drawable.redback),
+                                painter = painterResource(Utils.mapPlayerIndexToDrawable(players.indexOf(player))),
                                 contentDescription = null,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -156,6 +187,7 @@ fun PokerTable(
                     cards.forEachIndexed { idx, card ->
                         CardView(
                             card = card,
+                            playerIndex = players.indexOf(losingPlayer),
                             isFaceUp = false, //skullOwner?.id == currentPlayer.id,
                             isSelectable = isCurrentUserTurn,
                             onClick = {
@@ -173,29 +205,36 @@ fun PokerTable(
 @Composable
 fun CardView(
     card: Card,
+    playerIndex: Int,
     isSelectable: Boolean,
     isFaceUp: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     var showConfirmation by remember { mutableStateOf(false) }
-    val cardImage = if (isFaceUp) painterResource(Res.drawable.blueskull) else painterResource(Res.drawable.redback)
+    val cardImage = if (isFaceUp) Utils.mapPlayerIndexToDrawable(
+        playerIndex,
+        card == Card.SKULL,
+        card == Card.ROSE
+    ) else Utils.mapPlayerIndexToDrawable(playerIndex)
     val clickableModifier = if (isSelectable) {
         PulsingBorder().clickable { onClick?.invoke() }
     } else {
         Modifier
     }
 
+    val boxSize = if (isSelectable) 48.dp else 40.dp
+    val imageSize = if (isSelectable) 40.dp else 32.dp
     Box(
         contentAlignment = Alignment.Center,
         modifier = clickableModifier
-            .size(40.dp)
+            .size(boxSize)
             .let { if (onClick != null) it.clickable { onClick() } else it }
             .clickable(enabled = isSelectable) { showConfirmation = true }
     ) {
         Image(
-            painter = cardImage,
+            painter = painterResource(cardImage),
             contentDescription = null,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier.size(imageSize)
         )
         if (showConfirmation) {
             ConfirmationDialog(

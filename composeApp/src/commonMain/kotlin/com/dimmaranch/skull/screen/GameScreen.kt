@@ -71,6 +71,7 @@ fun GameScreen(
             players.map { it.name },
             players[gameState.currentPlayerIndex].name,
             onEndGame = {
+                //TODO Show gigantic full screen ad
                 viewModel.clearGame()
                 onEndGame.invoke()
             }

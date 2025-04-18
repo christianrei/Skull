@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,17 +20,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dimmaranch.skull.state.RevealedCard
 import kotlinx.coroutines.delay
 
 @Composable
 fun RevealCardsAnimation(
     revealedCards: List<RevealedCard>,
+    playerIndex: Int,
     onAnimationEnd: () -> Unit
 ) {
     var flipAllCards by remember { mutableStateOf(false) }
 
+    println("MEME: playerIndex: $playerIndex")
     if (revealedCards.isNotEmpty()) {
         LaunchedEffect(Unit) {
             delay(500)
@@ -52,16 +52,26 @@ fun RevealCardsAnimation(
                         front = {
                             Box(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Color.DarkGray),
+                                    .fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("Card Back", color = Color.White, fontSize = 12.sp)
+                                CardView(
+                                    card = revealed.card,
+                                    playerIndex,
+                                    false,
+                                    isFaceUp = false,
+                                    onClick = {}
+                                )
                             }
                         },
                         back = {
-                            //TODO Fix this with revealed = true not isSelectable
-                            CardView(card = revealed.card, false, onClick = {})
+                            CardView(
+                                card = revealed.card,
+                                playerIndex,
+                                false,
+                                isFaceUp = true,
+                                onClick = {}
+                            )
                         },
                         flip = flipAllCards
                     )
@@ -86,6 +96,7 @@ fun FlipCard(
     val isFront = rotation <= 90f
 
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .width(80.dp)
             .height(120.dp)
@@ -96,6 +107,7 @@ fun FlipCard(
     ) {
         if (isFront) {
             Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
@@ -107,6 +119,7 @@ fun FlipCard(
             }
         } else {
             Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {

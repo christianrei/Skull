@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dimmaranch.skull.commonUI.Theme
@@ -105,7 +106,7 @@ fun CodeTextField(roomCode: MutableState<String>) {
             focusedLabelColor = Theme.SlateGray,
             unfocusedLabelColor = Theme.SlateGray,
         ),
-        textStyle = defaultTextStyle.copy(fontSize = 16.sp),
+        textStyle = defaultTextStyle.copy(fontSize = 16.sp, textAlign = TextAlign.Start),
         singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.Words
