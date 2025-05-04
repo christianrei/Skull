@@ -160,27 +160,13 @@ fun PokerTable(
                                 println("MEME: isSelectable: $isSelectable")
 
                                 Box(contentAlignment = Alignment.Center) {
-                                    AnimatedCardFlip(
-                                        isFaceUp = isTopCardFaceUp,
-                                        front = {
-                                            CardView(
-                                                card = cards[topIndex],
-                                                playerIndex = index,
-                                                isSelectable = isSelectable,
-                                                isFaceUp = false,
-                                                onClick = {
-                                                    onCardSelected(player.id, topIndex)
-                                                }
-                                            )
-                                        },
-                                        back = {
-                                            CardView(
-                                                card = cards[topIndex],
-                                                playerIndex = index,
-                                                isSelectable = isSelectable,
-                                                isFaceUp = true,
-                                                onClick = null
-                                            )
+                                    CardView(
+                                        card = cards[topIndex],
+                                        playerIndex = index,
+                                        isSelectable = isSelectable,
+                                        isFaceUp = false,
+                                        onClick = {
+                                            onCardSelected(player.id, topIndex)
                                         }
                                     )
 

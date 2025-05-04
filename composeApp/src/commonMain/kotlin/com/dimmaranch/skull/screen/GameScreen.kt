@@ -46,9 +46,6 @@ fun GameScreen(
                             cardIndex
                         )
                     )
-                },
-                onGameAction = {
-                    viewModel.handleAction(it)
                 })
         }
 
@@ -65,9 +62,6 @@ fun GameScreen(
                             cardIndex
                         )
                     )
-                },
-                onGameAction = {
-                    viewModel.handleAction(it)
                 },
                 eliminatedPlayers = emptyList(),
                 allPlayers = players
