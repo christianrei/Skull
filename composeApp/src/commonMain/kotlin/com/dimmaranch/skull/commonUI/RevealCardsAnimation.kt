@@ -29,14 +29,15 @@ fun RevealCardsAnimation(
     playerIndex: Int,
     onAnimationEnd: () -> Unit
 ) {
-    var flipAllCards by remember { mutableStateOf(false) }
+    val lastCard = revealedCards.lastOrNull()
+    var animateLastCard by remember(lastCard) { mutableStateOf(false) }
 
-    println("MEME: playerIndex: $playerIndex")
     if (revealedCards.isNotEmpty()) {
-        LaunchedEffect(Unit) {
-            delay(500)
-            flipAllCards = true
-            delay(2000) // show flipped cards for 2s
+        LaunchedEffect(lastCard) {
+            animateLastCard = false
+            delay(200) // slight buffer to ensure new card is drawn first
+            animateLastCard = true
+            delay(1000)
             onAnimationEnd()
         }
 
@@ -47,39 +48,34 @@ fun RevealCardsAnimation(
             contentAlignment = Alignment.Center
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                revealedCards.forEach { revealed ->
-                    FlipCard(
-                        front = {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CardView(
-                                    card = revealed.card,
-                                    playerIndex,
-                                    false,
-                                    isFaceUp = false,
-                                    onClick = {}
-                                )
-                            }
-                        },
-                        back = {
-                            CardView(
-                                card = revealed.card,
-                                playerIndex,
-                                false,
-                                isFaceUp = true,
-                                onClick = {}
-                            )
-                        },
-                        flip = flipAllCards
-                    )
-                }
+                val revealed = revealedCards.lastOrNull() ?: return@Row
+                val isLast = revealed == lastCard
+                FlipCard(
+                    front = {
+                        CardView(
+                            card = revealed.card,
+                            playerIndex,
+                            isSelectable = false,
+                            isAnimating = true,
+                            isFaceUp = false
+                        )
+                    },
+                    back = {
+                        CardView(
+                            card = revealed.card,
+                            playerIndex,
+                            isSelectable = false,
+                            isAnimating = true,
+                            isFaceUp = true
+                        )
+                    },
+                    flip = if (isLast) animateLastCard else true // only animate last one
+                )
             }
         }
     }
 }
+
 
 @Composable
 fun FlipCard(

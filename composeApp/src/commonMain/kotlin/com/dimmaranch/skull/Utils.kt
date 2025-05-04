@@ -7,6 +7,7 @@ import com.dimmaranch.skull.state.Player
 import org.jetbrains.compose.resources.DrawableResource
 import skull.composeapp.generated.resources.Res
 import skull.composeapp.generated.resources.blueback
+import skull.composeapp.generated.resources.bluerose
 import skull.composeapp.generated.resources.blueskull
 import skull.composeapp.generated.resources.brownback
 import skull.composeapp.generated.resources.brownrose
@@ -19,7 +20,7 @@ import skull.composeapp.generated.resources.pinkrose
 import skull.composeapp.generated.resources.pinkskull
 import skull.composeapp.generated.resources.redback
 import skull.composeapp.generated.resources.redskull
-import skull.composeapp.generated.resources.resrose
+import skull.composeapp.generated.resources.redrose
 import skull.composeapp.generated.resources.yellowback
 import skull.composeapp.generated.resources.yellowrose
 import skull.composeapp.generated.resources.yellowskull
@@ -36,10 +37,6 @@ object Utils {
     fun isRoomCodeValid(roomCode: String): Boolean {
         return roomCode.length == 4
     }
-
-//    fun GameState.toMap(): Map<String, Any> {
-//        return Json.encodeToJsonElement(this).jsonObject.mapValues { it.value.toString() }
-//    }
 
     fun GameState.toMap(): Map<String, Any?> {
         return mapOf(
@@ -129,8 +126,8 @@ object Utils {
 
     fun mapPlayerIndexToDrawable(playerIndex: Int, getSkull: Boolean = false, getRose: Boolean = false): DrawableResource {
         return when(playerIndex) {
-            0 -> if (getSkull) { Res.drawable.blueskull } else if (getRose) { Res.drawable.blueback } else { Res.drawable.blueback }
-            1 -> if (getSkull) { Res.drawable.redskull } else if (getRose) { Res.drawable.resrose } else { Res.drawable.redback }
+            0 -> if (getSkull) { Res.drawable.blueskull } else if (getRose) { Res.drawable.bluerose } else { Res.drawable.blueback }
+            1 -> if (getSkull) { Res.drawable.redskull } else if (getRose) { Res.drawable.redrose } else { Res.drawable.redback }
             2 -> if (getSkull) { Res.drawable.greenskull } else if (getRose) { Res.drawable.greenrose } else { Res.drawable.greenback }
             3 -> if (getSkull) { Res.drawable.brownskull } else if (getRose) { Res.drawable.brownrose } else { Res.drawable.brownback }
             4 -> if (getSkull) { Res.drawable.pinkskull } else if (getRose) { Res.drawable.pinkrose } else { Res.drawable.pinkback }

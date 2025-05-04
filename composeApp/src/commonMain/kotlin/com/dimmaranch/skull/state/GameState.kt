@@ -61,7 +61,7 @@ data class GameState(
     val phase: Phase = Phase.SETUP,
     val challengeState: ChallengeState? = null,
     val revealedCards: List<RevealedCard> = emptyList(), // Needed to notify apps which cards to animate reveal
-    val remainingCardsToReveal: Int = 0 // New: Number of cards left to reveal
+    val remainingCardsToReveal: Int = 0, // New: Number of cards left to reveal
 )
 
 //@Serializable

@@ -31,21 +31,25 @@ fun GameScreen(
             ChallengingPhaseUI(
                 gameState = gameState,
                 players = players,
-                losingPlayer = players[gameState.currentPlayerIndex],
+                bidWinner = players[gameState.currentPlayerIndex],
                 skullOwner = players[gameState.challengedPlayerIndex],
                 isCurrentUserTurn = isCurrentUserTurn,
                 onAnimationEnded = {
-                    viewModel.clearRevealedCards()
+                    viewModel.handleAction(GameAction.RevealAnimationDone)
+//                    viewModel.clearRevealedCards()
                     // optionally continue the revealing logic
-                }
-            ) { playerId, cardIndex ->
-                viewModel.handleAction(
-                    GameAction.RevealNextCard(
-                        playerId,
-                        cardIndex
+                },
+                onCardSelected = { playerId, cardIndex ->
+                    viewModel.handleAction(
+                        GameAction.RevealNextCard(
+                            playerId,
+                            cardIndex
+                        )
                     )
-                )
-            }
+                },
+                onGameAction = {
+                    viewModel.handleAction(it)
+                })
         }
 
         Phase.LOSE_A_CARD -> {
@@ -61,6 +65,9 @@ fun GameScreen(
                             cardIndex
                         )
                     )
+                },
+                onGameAction = {
+                    viewModel.handleAction(it)
                 },
                 eliminatedPlayers = emptyList(),
                 allPlayers = players

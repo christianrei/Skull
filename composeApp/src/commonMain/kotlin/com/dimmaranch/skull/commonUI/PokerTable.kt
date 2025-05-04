@@ -1,10 +1,10 @@
 package com.dimmaranch.skull.commonUI
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -25,15 +25,16 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -45,10 +46,10 @@ import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.Card
 import com.dimmaranch.skull.state.Phase
 import com.dimmaranch.skull.state.Player
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import skull.composeapp.generated.resources.Res
-import skull.composeapp.generated.resources.blueskull
-import skull.composeapp.generated.resources.redback
+import skull.composeapp.generated.resources.transcrown
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -63,13 +64,31 @@ fun PokerTable(
     losingPlayer: Player?,
     isCurrentUserTurn: Boolean,
     placedCards: Map<String, List<Card>>,
-    onCardSelected: (String, Int) -> Unit = { _, _ -> }
+    onCardSelected: (String, Int) -> Unit = { _, _ -> },
 ) {
+    val density = LocalDensity.current
+    val revealedCardIndices = remember { mutableStateMapOf<String, MutableSet<Int>>() }
+
+    // Dramatic Auto Flip for Bid Winner
+    LaunchedEffect(currentPhase, bidWinner?.id, isCurrentUserTurn) {
+        val bidderId = bidWinner?.id
+        if (currentPhase == Phase.CHALLENGING && isCurrentUserTurn && bidderId != null) {
+            val cardsToReveal = placedCards[bidderId] ?: return@LaunchedEffect
+            val revealed = revealedCardIndices.getOrPut(bidderId) { mutableSetOf() }
+
+            for (i in cardsToReveal.indices) {
+                if (revealed.contains(i)) continue
+                delay(800)
+                revealed.add(i)
+            }
+        }
+    }
+
     BoxWithConstraints(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         val width = constraints.maxWidth.toFloat()
         val height = constraints.maxHeight.toFloat()
-        val density = LocalDensity.current
 
+        // Poker Table background
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -95,26 +114,28 @@ fun PokerTable(
             val y = sin(radians) * offset
 
             val isLosingPlayer = player.id == losingPlayer?.id
-            val isSkullOwner = player.id == skullOwner?.id
             val showLosingCardsInCenter = currentPhase == Phase.LOSE_A_CARD && isLosingPlayer
 
             if (!showLosingCardsInCenter) {
                 Box(
                     modifier = Modifier
                         .offset { IntOffset(x.roundToInt(), y.roundToInt()) }
-                        .border(
-                            2.dp,
-                            if (player.id == bidWinner?.id && currentPhase == Phase.CHALLENGING) Color.Red
-                            else Color.Transparent
-                        )
                         .padding(8.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        if (player.id == bidWinner?.id && currentPhase == Phase.CHALLENGING) {
+                            Image(
+                                painter = painterResource(Res.drawable.transcrown),
+                                contentDescription = "Bid Winner Crown",
+                                modifier = Modifier
+                                    .size(48.dp)
+                            )
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = player.name, color = Color.White)
                             if (player.points == 1) {
                                 Icon(
-                                    imageVector = Icons.Default.Star, // Change to a cooler icon if desired
+                                    imageVector = Icons.Default.Star,
                                     contentDescription = "1 point",
                                     tint = Color.Magenta,
                                     modifier = Modifier.size(24.dp).padding(start = 4.dp)
@@ -122,22 +143,47 @@ fun PokerTable(
                             }
                         }
 
-                        // Stacked placed cards (only top card is clickable)
+                        // Placed cards
                         placedCards[player.id]?.let { cards ->
                             if (cards.isNotEmpty()) {
+                                val topIndex = cards.lastIndex
+                                val isBidder = player.id == bidWinner?.id
+                                val revealedIndices = revealedCardIndices[player.id] ?: emptySet()
+                                val isTopCardFaceUp = topIndex in revealedIndices
+
+                                val isSelectable = currentPhase == Phase.CHALLENGING &&
+                                        isCurrentUserTurn &&
+                                        (((placedCards[bidWinner?.id]?.size
+                                            ?: 0) >= 1 && isBidder) || (placedCards[bidWinner?.id]?.size
+                                            ?: 0) == 0 && !isBidder)
+
+                                println("MEME: isSelectable: $isSelectable")
+
                                 Box(contentAlignment = Alignment.Center) {
-                                    // Only top card is shown & clickable
-                                    CardView(
-                                        card = cards.last(),
-                                        playerIndex = players.indexOf(player),
-                                        isFaceUp = false, // Show as face down until revealed
-                                        isSelectable = isCurrentUserTurn && currentPhase == Phase.CHALLENGING,
-                                        onClick = {
-                                            onCardSelected.invoke(player.id, cards.lastIndex)
+                                    AnimatedCardFlip(
+                                        isFaceUp = isTopCardFaceUp,
+                                        front = {
+                                            CardView(
+                                                card = cards[topIndex],
+                                                playerIndex = index,
+                                                isSelectable = isSelectable,
+                                                isFaceUp = false,
+                                                onClick = {
+                                                    onCardSelected(player.id, topIndex)
+                                                }
+                                            )
+                                        },
+                                        back = {
+                                            CardView(
+                                                card = cards[topIndex],
+                                                playerIndex = index,
+                                                isSelectable = isSelectable,
+                                                isFaceUp = true,
+                                                onClick = null
+                                            )
                                         }
                                     )
 
-                                    // Stack size indicator
                                     if (cards.size > 1) {
                                         Box(
                                             modifier = Modifier
@@ -158,11 +204,11 @@ fun PokerTable(
                             }
                         }
 
+                        // Player's hand preview
                         if (player.cardsInHand.isNotEmpty()) {
-                            // One face-down card to symbolize hand
                             Spacer(modifier = Modifier.height(4.dp))
                             Image(
-                                painter = painterResource(Utils.mapPlayerIndexToDrawable(players.indexOf(player))),
+                                painter = painterResource(Utils.mapPlayerIndexToDrawable(index)),
                                 contentDescription = null,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -172,23 +218,30 @@ fun PokerTable(
             }
         }
 
-        // Show losing player's cards in center if in LOSING_CARD phase
+        // Center cards for discard phase
         if (currentPhase == Phase.LOSE_A_CARD && losingPlayer?.id != null && skullOwner?.id != null) {
             val cards = losingPlayer?.cardsInHand ?: emptyList()
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = if (isCurrentUserTurn) "Tap a card to discard from ${losingPlayer?.name}" else "${losingPlayer?.name} is discarding...",
+                    text = "${losingPlayer?.name} has had their cards randomized!",
+                    color = Color.Yellow,
+                    style = defaultTextStyle,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = if (isCurrentUserTurn) "Tap a card to discard from ${losingPlayer.name}" else "${losingPlayer.name} is discarding...",
                     color = Color.Red,
                     style = defaultTextStyle,
                     modifier = Modifier.padding(8.dp)
                 )
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    cards.forEachIndexed { idx, card ->
+                    cards.shuffled().forEachIndexed { idx, card ->
                         CardView(
                             card = card,
                             playerIndex = players.indexOf(losingPlayer),
-                            isFaceUp = false, //skullOwner?.id == currentPlayer.id,
+                            isFaceUp = false,
                             isSelectable = isCurrentUserTurn,
                             onClick = {
                                 onCardSelected.invoke(losingPlayer.id, idx)
@@ -197,53 +250,6 @@ fun PokerTable(
                     }
                 }
             }
-        }
-    }
-}
-
-
-@Composable
-fun CardView(
-    card: Card,
-    playerIndex: Int,
-    isSelectable: Boolean,
-    isFaceUp: Boolean = false,
-    onClick: (() -> Unit)? = null
-) {
-    var showConfirmation by remember { mutableStateOf(false) }
-    val cardImage = if (isFaceUp) Utils.mapPlayerIndexToDrawable(
-        playerIndex,
-        card == Card.SKULL,
-        card == Card.ROSE
-    ) else Utils.mapPlayerIndexToDrawable(playerIndex)
-    val clickableModifier = if (isSelectable) {
-        PulsingBorder().clickable { onClick?.invoke() }
-    } else {
-        Modifier
-    }
-
-    val boxSize = if (isSelectable) 48.dp else 40.dp
-    val imageSize = if (isSelectable) 40.dp else 32.dp
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = clickableModifier
-            .size(boxSize)
-            .let { if (onClick != null) it.clickable { onClick() } else it }
-            .clickable(enabled = isSelectable) { showConfirmation = true }
-    ) {
-        Image(
-            painter = painterResource(cardImage),
-            contentDescription = null,
-            modifier = Modifier.size(imageSize)
-        )
-        if (showConfirmation) {
-            ConfirmationDialog(
-                onConfirm = {
-                    showConfirmation = false
-                    onClick?.invoke()
-                },
-                onDismiss = { showConfirmation = false }
-            )
         }
     }
 }
@@ -261,3 +267,36 @@ fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         }
     )
 }
+
+@Composable
+fun AnimatedCardFlip(
+    isFaceUp: Boolean,
+    front: @Composable () -> Unit,
+    back: @Composable () -> Unit
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (isFaceUp) 180f else 0f,
+        animationSpec = tween(durationMillis = 600),
+        label = "cardFlip"
+    )
+    val isFront = rotation <= 90f
+    val density = LocalDensity.current
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .width(80.dp)
+            .height(120.dp)
+            .graphicsLayer {
+                rotationY = rotation
+                cameraDistance = 12 * density.density
+            }
+    ) {
+        if (isFront) {
+            front()
+        } else {
+            back()
+        }
+    }
+}
+
