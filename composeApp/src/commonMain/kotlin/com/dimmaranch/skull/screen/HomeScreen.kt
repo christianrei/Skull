@@ -13,7 +13,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.GameAction
-import com.dimmaranch.skull.state.isUserRoomHost
 import com.dimmaranch.skull.viewmodel.GameViewModel
 
 class HomeScreen(
@@ -56,12 +55,10 @@ class HomeScreen(
                                 gameVM.createGameRoom(hostPlayerId = playerName)
                                 navigator.push(
                                     CreateRoomScreen(
-                                        roomCode = gameVM.gameState.value.roomCode,
-                                        roomHostId = gameVM.gameState.value.hostId,
-                                        isHost = gameVM.gameState.value.isUserRoomHost(playerName),
                                         onStartGame = {
                                             gameVM.handleAction(GameAction.StartGame)
                                         },
+                                        playerName = playerName,
                                         viewModel = gameVM
                                     )
                                 )

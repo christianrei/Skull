@@ -26,15 +26,13 @@ import com.dimmaranch.skull.commonUI.Theme.SecondaryText
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.GameState
 import com.dimmaranch.skull.state.Phase
-import com.dimmaranch.skull.state.Player
+import com.dimmaranch.skull.state.isUserRoomHost
 import com.dimmaranch.skull.viewmodel.GameViewModel
 
 class CreateRoomScreen(
     private val viewModel: GameViewModel,
-    private val roomCode: String,
-    private val roomHostId: String?,
-    private val isHost: Boolean = false,
-    private val onStartGame: () -> Unit
+    private val onStartGame: () -> Unit,
+    private val playerName: String,
 ) : Screen {
 
     @Composable
@@ -44,6 +42,9 @@ class CreateRoomScreen(
         val navigator = LocalNavigator.current
 
         val players = gameState.players.values.toList()
+        val roomCode = gameState.roomCode
+        val roomHostId = gameState.hostId
+        val isHost = gameState.isUserRoomHost(playerName)
 
         LaunchedEffect(gameState.phase) {
             if (gameState.phase == Phase.PLACING_FIRST_CARD) {

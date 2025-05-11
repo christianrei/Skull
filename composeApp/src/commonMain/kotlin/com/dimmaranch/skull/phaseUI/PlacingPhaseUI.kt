@@ -133,22 +133,22 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
 
         players.find { it.id == viewModel.getCurrentUserId() }?.let { userPlayer ->
             val playerIndex = players.indexOf(userPlayer)
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (userPlayer.cardsInHand.size > 0) CardImageWithText(userPlayer.cardsInHand[0], playerIndex)
                     Spacer(modifier = Modifier.height(16.dp))
                     if (userPlayer.cardsInHand.size > 1) CardImageWithText(userPlayer.cardsInHand[1], playerIndex)
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (userPlayer.cardsInHand.size > 2) CardImageWithText(userPlayer.cardsInHand[2], playerIndex)
                     Spacer(modifier = Modifier.height(16.dp))

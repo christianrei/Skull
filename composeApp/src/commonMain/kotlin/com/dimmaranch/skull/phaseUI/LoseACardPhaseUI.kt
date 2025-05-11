@@ -10,7 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.dimmaranch.skull.commonUI.PokerTable
@@ -36,9 +38,15 @@ fun LoseACardPhaseUI(
     ) {
         Text(
             text = "${losingPlayer.name} must discard a card!",
-            style = defaultTextStyle,
+            style = defaultTextStyle.copy(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(2f, 2f),
+                    blurRadius = 4f
+                )
+            ),
             fontWeight = FontWeight.Bold,
-            color = Color.Red
+            color = Color.Yellow
         )
 
         Spacer(modifier = Modifier.height(16.dp))
