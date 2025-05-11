@@ -87,3 +87,11 @@ fun GameState.isCurrentUserPlayer(viewModel: GameViewModel): Boolean {
     if (this.players.isEmpty()) return false
     return this.players.values.toList()[this.currentPlayerIndex].id == viewModel.getCurrentUserId().orEmpty()
 }
+
+fun MutableList<Card>.hasRose(): Boolean {
+    return this.contains(Card.ROSE)
+}
+
+fun MutableList<Card>.hasSkull(): Boolean {
+    return this.contains(Card.SKULL)
+}

@@ -28,6 +28,8 @@ import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.Card
 import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.state.GameState
+import com.dimmaranch.skull.state.hasRose
+import com.dimmaranch.skull.state.hasSkull
 import com.dimmaranch.skull.state.isCurrentUserPlayer
 import com.dimmaranch.skull.viewmodel.GameViewModel
 import org.jetbrains.compose.resources.painterResource
@@ -79,7 +81,7 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
                     optionClicked.value = true
                 },
                 modifier = Modifier.padding(8.dp),
-                enabled = buttonsEnabled
+                enabled = buttonsEnabled && players[gameState.currentPlayerIndex].cardsInHand.hasRose()
             ) {
                 Text("Play Rose")
             }
@@ -95,7 +97,7 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
                     optionClicked.value = true
                 },
                 modifier = Modifier.padding(8.dp),
-                enabled = buttonsEnabled
+                enabled = buttonsEnabled && players[gameState.currentPlayerIndex].cardsInHand.hasSkull()
             ) {
                 Text("Play Skull")
             }

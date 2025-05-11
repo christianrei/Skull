@@ -242,7 +242,7 @@ class GameViewModel {
         )
     }
 
-    fun updatePlayersAfterTurn(card: Card): List<Player>? {
+    private fun updatePlayersAfterTurn(card: Card): List<Player>? {
         val player = gameState.value.players.values.toList().find {
             it.id == getCurrentUserId()
         }
@@ -283,8 +283,6 @@ class GameViewModel {
             }
 
             PlayerAction.START_BIDDING -> {
-//                if (gameState.value.players.values.toList()[gameState.value.currentBidderIndex].id != playerId) return gameState.value
-
                 val minBid = 1
                 val maxBid = gameState.value.placedCards.values.sumOf { it.size }
 
@@ -477,7 +475,8 @@ class GameViewModel {
         val currentPlaced = game.placedCards.toMutableMap()
         currentPlaced[playerId] = updatedPlaced
 
-        val player = players.find { it.id == playerId } ?: return game // fallback in case ID not found
+        val player =
+            players.find { it.id == playerId } ?: return game // fallback in case ID not found
         val currentHand = player.cardsInHand.toMutableList()
 
         val updatedPlayers = players.map {
