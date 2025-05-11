@@ -16,80 +16,74 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 
-@Composable
-fun SettingsScreen(
-    onBackClicked: () -> Unit, // To navigate back to the previous screen
-    onSoundChanged: (Boolean) -> Unit, // Sound toggle
-    onNotificationsChanged: (Boolean) -> Unit // Notifications toggle
-) {
-    var skullImageUri = remember { mutableStateOf<ByteArray?>(null) }
-    var roseImageUri = remember { mutableStateOf<ByteArray?>(null) }
+class SettingsScreen(
+    private val onBackClicked: () -> Unit,
+    private val onNotificationsChanged: (Boolean) -> Unit
+) : Screen {
 
-    // This is where you would typically manage your settings
-    val soundEnabled = remember { true } // Default sound enabled
-    val notificationsEnabled = remember { true } // Default notifications enabled
+    @Composable
+    override fun Content() {
+        var skullImageUri = remember { mutableStateOf<ByteArray?>(null) }
+        var roseImageUri = remember { mutableStateOf<ByteArray?>(null) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Settings",
-//            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+        // This is where you would typically manage your settings
+        val soundEnabled = remember { true } // Default sound enabled
+        val notificationsEnabled = remember { true } // Default notifications enabled
 
-        // Sound setting
-        SettingsSwitch(
-            label = "Sound",
-            checked = soundEnabled,
-            onCheckedChange = onSoundChanged
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Notifications setting
-        SettingsSwitch(
-            label = "Notifications",
-            checked = notificationsEnabled,
-            onCheckedChange = onNotificationsChanged
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Back button to navigate to previous screen
-        Button(
-            onClick = onBackClicked,
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Back")
+            Text(
+                text = "Settings",
+//            style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            // Notifications setting
+            SettingsSwitch(
+                label = "Notifications",
+                checked = notificationsEnabled,
+                onCheckedChange = onNotificationsChanged
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Back button to navigate to previous screen
+            Button(
+                onClick = onBackClicked,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Back")
+            }
         }
     }
-}
 
-@Composable
-fun SettingsSwitch(
-    label: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+    @Composable
+    fun SettingsSwitch(
+        label: String,
+        checked: Boolean,
+        onCheckedChange: (Boolean) -> Unit
     ) {
-        Text(
-            text = label,
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
 //            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f)
-        )
+                modifier = Modifier.weight(1f)
+            )
 
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            modifier = Modifier.padding(start = 8.dp)
-        )
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
     }
 }

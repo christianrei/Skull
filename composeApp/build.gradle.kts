@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -8,25 +9,34 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.serialization)
+//    id("org.jetbrains.kotlin.native.cocoapods")
     id("com.google.gms.google-services")
 }
 
 kotlin {
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-    
+
+    val xcFramework = XCFramework()
+
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
+    ).forEach { target ->
+        target.binaries.framework {
             baseName = "ComposeApp"
+            binaryOptions["bundleId"] = "com.dimmaranch.skull"
             isStatic = true
+            xcFramework.add(this)
         }
     }
     
@@ -48,9 +58,9 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.accompanist.navigationAnimation)
 //            implementation(platform(libs.firebase.bom))
-            implementation(libs.firebase.analytics)
-            implementation(libs.firebase.messaging)
-            implementation(libs.firebase.database.ktx)
+//            implementation(libs.firebase.analytics)
+//            implementation(libs.firebase.messaging)
+//            implementation(libs.firebase.database.ktx)
 
             implementation(libs.hyperdrive.multiplatformx.api)
 
@@ -70,6 +80,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.components.resources)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.voyager.navigator)
+            implementation(libs.lifecycle)
             api(libs.kermit)
             api(libs.kermit.crashlytics)
             api(libs.kotlinx.coroutines.core)
@@ -101,9 +113,6 @@ kotlin {
             implementation(libs.sqliter)
             implementation(libs.ktor.client.ios)
             implementation(libs.ktor.client.darwin)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
         }
     }
 }

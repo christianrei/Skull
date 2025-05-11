@@ -20,67 +20,75 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dimmaranch.skull.viewmodel.GameViewModel
+import cafe.adriel.voyager.core.screen.Screen
+import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.commonUI.PlayerNameTextField
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
-import com.dimmaranch.skull.Utils
+import com.dimmaranch.skull.viewmodel.GameViewModel
 
-@Composable
-fun RoomOptionsScreen(gameVM: GameViewModel, navigateToCreate: (String) -> Unit, navigateToJoin: (String) -> Unit) {
-    val playerId by gameVM.userNameState.collectAsState()
-    var areButtonsEnabled by remember { mutableStateOf(false) }
+class RoomOptionsScreen(
+    private val gameVM: GameViewModel,
+    private val navigateToCreate: (String) -> Unit,
+    private val navigateToJoin: (String) -> Unit
+) : Screen {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        LaunchedEffect(playerId) {
-            areButtonsEnabled = Utils.isPlayerNameValid(playerId)
-        }
+    @Composable
+    override fun Content() {
+        val playerId by gameVM.userNameState.collectAsState()
+        var areButtonsEnabled by remember { mutableStateOf(false) }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LaunchedEffect(playerId) {
+                areButtonsEnabled = Utils.isPlayerNameValid(playerId)
+            }
 
 //        Image(
 //            painter = painterResource("drawable/title_logo.xml"),
 //            contentDescription = "SVG Image"
 //        )
 
-        Text(
-            text = "Skulls Game",
-            style = defaultTextStyle.copy(fontSize = 40.sp)
-        )
+            Text(
+                text = "Skulls Game",
+                style = defaultTextStyle.copy(fontSize = 40.sp)
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = "Set your name then Create a room or Join a room by entering the host's code",
-            textAlign = TextAlign.Center,
-            style = defaultTextStyle
-        )
+            Text(
+                text = "Set your name then Create a room or Join a room by entering the host's code",
+                textAlign = TextAlign.Center,
+                style = defaultTextStyle
+            )
 
-        PlayerNameTextField(gameVM)
+            PlayerNameTextField(gameVM)
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Button(
-            enabled = areButtonsEnabled,
-            onClick = {
-                navigateToCreate.invoke(playerId)
+            Button(
+                enabled = areButtonsEnabled,
+                onClick = {
+                    navigateToCreate.invoke(playerId)
+                }
+            ) {
+                Text(text = "Create a Room")
             }
-        ) {
-            Text(text = "Create a Room")
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            enabled = areButtonsEnabled,
-            onClick = {
-                navigateToJoin.invoke(playerId)
+            Button(
+                enabled = areButtonsEnabled,
+                onClick = {
+                    navigateToJoin.invoke(playerId)
+                }
+            ) {
+                Text(text = "Join a Room")
             }
-        ) {
-            Text(text = "Join a Room")
         }
     }
 }
