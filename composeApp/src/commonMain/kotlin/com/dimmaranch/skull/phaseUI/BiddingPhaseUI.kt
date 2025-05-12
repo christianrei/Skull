@@ -16,7 +16,6 @@ import com.dimmaranch.skull.state.isCurrentUserPlayer
 @Composable
 fun BiddingPhaseUI(viewModel: GameViewModel) {
     val gameState by viewModel.gameState.collectAsState()
-    val playerId by viewModel.userNameState.collectAsState()
     val players = gameState.players.values.toList()
 
     Column(
@@ -35,7 +34,16 @@ fun BiddingPhaseUI(viewModel: GameViewModel) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row {
+        Text(
+            text = "Number of cards placed: ${gameState.placedCards.size}",
+            style = defaultTextStyle,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 "Increase Bid",
                 style = defaultTextStyle,
@@ -48,13 +56,6 @@ fun BiddingPhaseUI(viewModel: GameViewModel) {
                     viewModel.handleAction(GameAction.PlaceBid(newBid))
                 }
             )
-
-//            Button(
-//                onClick = { viewModel.handleAction(GameAction.Challenge(gameState.currentPlayerIndex)) },
-//                modifier = Modifier.padding(8.dp)
-//            ) {
-//                Text("Challenge")
-//            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

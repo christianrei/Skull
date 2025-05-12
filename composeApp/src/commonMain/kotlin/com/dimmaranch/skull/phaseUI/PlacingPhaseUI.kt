@@ -33,9 +33,6 @@ import com.dimmaranch.skull.state.hasSkull
 import com.dimmaranch.skull.state.isCurrentUserPlayer
 import com.dimmaranch.skull.viewmodel.GameViewModel
 import org.jetbrains.compose.resources.painterResource
-import skull.composeapp.generated.resources.Res
-import skull.composeapp.generated.resources.blueback
-import skull.composeapp.generated.resources.blueskull
 
 @Composable
 fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false) {
@@ -140,20 +137,20 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
                 verticalArrangement = Arrangement.Center
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     if (userPlayer.cardsInHand.size > 0) CardImageWithText(userPlayer.cardsInHand[0], playerIndex)
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
                     if (userPlayer.cardsInHand.size > 1) CardImageWithText(userPlayer.cardsInHand[1], playerIndex)
                 }
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     if (userPlayer.cardsInHand.size > 2) CardImageWithText(userPlayer.cardsInHand[2], playerIndex)
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
                     if (userPlayer.cardsInHand.size > 3) CardImageWithText(userPlayer.cardsInHand[3], playerIndex)
                 }
             }
@@ -175,14 +172,20 @@ fun CardImageWithText(
     card: Card,
     playerIndex: Int = 0
 ) {
-    Text(
-        text = card.name,
-        style = defaultTextStyle,
-    )
-    val image = Utils.mapPlayerIndexToDrawable(playerIndex, card == Card.SKULL, card == Card.ROSE)
-    Image(
-        painter = painterResource(image),
-        contentDescription = null,
-        modifier = Modifier.size(64.dp)
-    )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = card.name,
+            style = defaultTextStyle,
+        )
+        val image =
+            Utils.mapPlayerIndexToDrawable(playerIndex, card == Card.SKULL, card == Card.ROSE)
+        Image(
+            painter = painterResource(image),
+            contentDescription = null,
+            modifier = Modifier.size(64.dp)
+        )
+    }
 }

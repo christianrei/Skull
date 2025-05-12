@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -39,6 +39,8 @@
 		9CBAACBB2DD04BED001149C5 /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 9CBAACBA2DD04BED001149C5 /* FirebaseVertexAI */; };
 		9CBAACBD2DD055B4001149C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9CBAACBC2DD055B4001149C5 /* GoogleService-Info.plist */; };
 		9CBAACBF2DD06207001149C5 /* dizzyedgeDEMO.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CBAACBE2DD06207001149C5 /* dizzyedgeDEMO.ttf */; };
+		9CD7306D2DD13225002230D3 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD7306C2DD13225002230D3 /* GoogleMobileAds.xcframework */; };
+		9CD7306E2DD13225002230D3 /* GoogleMobileAds.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD7306C2DD13225002230D3 /* GoogleMobileAds.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +51,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				9C3F429D2DD03FBC00E05D96 /* composeApp.xcframework in Embed Frameworks */,
+				9CD7306E2DD13225002230D3 /* GoogleMobileAds.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +71,7 @@
 		9C5FA0662DC70FB8006EFB8A /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBAACBC2DD055B4001149C5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9CBAACBE2DD06207001149C5 /* dizzyedgeDEMO.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = dizzyedgeDEMO.ttf; sourceTree = "<group>"; };
+		9CD7306C2DD13225002230D3 /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EQHXZ8M8AV:Google LLC"; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "../../../../Downloads/GoogleMobileAdsSdkiOS-12.4.0/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		AB37868E2F18F0930EA455A3 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +88,7 @@
 				9C3F429C2DD03FBC00E05D96 /* composeApp.xcframework in Frameworks */,
 				9CBAAC932DD04BED001149C5 /* FirebaseAppCheck in Frameworks */,
 				9CBAACAB2DD04BED001149C5 /* FirebaseInAppMessaging-Beta in Frameworks */,
+				9CD7306D2DD13225002230D3 /* GoogleMobileAds.xcframework in Frameworks */,
 				9CBAAC912DD04BED001149C5 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				9CBAAC972DD04BED001149C5 /* FirebaseAuth in Frameworks */,
 				9CBAACA92DD04BED001149C5 /* FirebaseFunctionsCombine-Community in Frameworks */,
@@ -119,6 +124,7 @@
 		42799AB246E5F90AF97AA0EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9CD7306C2DD13225002230D3 /* GoogleMobileAds.xcframework */,
 				9C5FA0662DC70FB8006EFB8A /* FirebaseCore.framework */,
 				34AEDC00A17ECB9A4866DEDE /* Pods_iosApp.framework */,
 			);

@@ -96,14 +96,6 @@ object Utils {
         return this.associateBy { it.id }
     }
 
-    fun Map<String, Any>.toPlayer(): Player {
-        return Player(
-            id = this["id"] as String,
-            name = this["name"] as String,
-            cardsInHand = this["cardsInHand"] as MutableList<Card>, // to enum Card
-        )
-    }
-
     fun buildHand(): MutableList<Card> {
         return mutableListOf(
             Card.ROSE,

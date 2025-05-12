@@ -1,5 +1,6 @@
 package com.dimmaranch.skull.viewmodel
 
+import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.Utils.generateRandomCode
 import com.dimmaranch.skull.Utils.toMap
 import com.dimmaranch.skull.Utils.toPlayerMap
@@ -130,12 +131,12 @@ class GameViewModel {
                 players = currentState.players + (getCurrentUserId().orEmpty() to Player(
                     id = getCurrentUserId().orEmpty(),
                     name = hostPlayerId,
+                    cardsInHand = Utils.buildHand(),
                 ))
             )
         }
         coroutineScope.launch {
             repository.updateGameState(_gameState.value.roomCode, _gameState.value.toMap())
-//            repository.createGameRoom(code, hostPlayerId)
         }
     }
 
@@ -145,7 +146,11 @@ class GameViewModel {
         coroutineScope.launch {
             val result = repository.joinGameRoom(
                 gameCode,
-                Player(id = getCurrentUserId() ?: UUID.randomUUID().toString(), name = playerId)
+                Player(
+                    id = getCurrentUserId() ?: UUID.randomUUID().toString(),
+                    name = playerId,
+                    cardsInHand = Utils.buildHand(),
+                )
             )
             if (result == JoinGameResult.Success) {
                 CoroutineScope(Dispatchers.Main).launch {
@@ -156,6 +161,7 @@ class GameViewModel {
                             players = currentState.players + (getCurrentUserId().orEmpty() to Player(
                                 id = getCurrentUserId().orEmpty(),
                                 name = playerId,
+                                cardsInHand = Utils.buildHand(),
                             ))
                         )
                     }

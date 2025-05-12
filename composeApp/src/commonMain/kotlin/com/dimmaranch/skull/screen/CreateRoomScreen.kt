@@ -32,7 +32,7 @@ import com.dimmaranch.skull.viewmodel.GameViewModel
 class CreateRoomScreen(
     private val viewModel: GameViewModel,
     private val onStartGame: () -> Unit,
-    private val playerName: String,
+    private val playerName: String = "",
 ) : Screen {
 
     @Composable

@@ -17,6 +17,21 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+//    iosX64() {
+//        binaries.framework {
+//            linkerOpts("-framework", "GoogleMobileAds")
+//        }
+//    }
+//    iosArm64() {
+//        binaries.framework {
+//            linkerOpts("-framework", "GoogleMobileAds")
+//        }
+//    }
+//    iosSimulatorArm64() {
+//        binaries.framework {
+//            linkerOpts("-framework", "GoogleMobileAds")
+//        }
+//    }
 
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -35,6 +50,7 @@ kotlin {
         target.binaries.framework {
             baseName = "ComposeApp"
             binaryOptions["bundleId"] = "com.dimmaranch.skull"
+            linkerOpts("-framework", "GoogleMobileAds")
             isStatic = true
             xcFramework.add(this)
         }
@@ -57,13 +73,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.coil.compose)
             implementation(libs.accompanist.navigationAnimation)
-//            implementation(platform(libs.firebase.bom))
-//            implementation(libs.firebase.analytics)
-//            implementation(libs.firebase.messaging)
-//            implementation(libs.firebase.database.ktx)
-
             implementation(libs.hyperdrive.multiplatformx.api)
-
             implementation(libs.bundles.androidx.compose)
             implementation(libs.androidx.material3.android)
 

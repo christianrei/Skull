@@ -46,20 +46,16 @@ class JoinRoomScreen(
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.current
+        val gameState: GameState by viewModel.gameState.collectAsState()
         val roomCode = remember { mutableStateOf("") }
         var isJoinEnabled by remember { mutableStateOf(false) }
 
-        val gameState: GameState by viewModel.gameState.collectAsState()
-        val playerId by viewModel.userNameState.collectAsState()
-        val navigator = LocalNavigator.current
         LaunchedEffect(gameState.canJoinRoom) {
             if (gameState.roomCode.isNotEmpty() && gameState.canJoinRoom) {
                 navigator?.push(
                     CreateRoomScreen(
                         viewModel,
-                        roomCode = gameState.roomCode,
-                        roomHostId = gameState.hostId,
-                        isHost = gameState.isUserRoomHost(playerId),
                         onStartGame = {
                             viewModel.handleAction(GameAction.StartGame)
                         }

@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 data class Player(
     val id: String = "",
     val name: String,
-    val cardsInHand: MutableList<Card> = Utils.buildHand(),
+    val cardsInHand: MutableList<Card> = mutableListOf(),
     var bid: Int = 0,
     var points: Int = 0,
     val hasPassedTurn: Boolean = false,
