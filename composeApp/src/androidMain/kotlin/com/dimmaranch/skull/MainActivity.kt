@@ -15,10 +15,10 @@ import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         val viewModel = GameViewModel()
-        installSplashScreen()
         setContent {
             SkullsTheme {
                 Box(
@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
                         .background(MidnightBlue)
                 ) {
                     VoyagerAppNavigation(viewModel)
-//                    AppNavigation(viewModel)
                 }
             }
         }

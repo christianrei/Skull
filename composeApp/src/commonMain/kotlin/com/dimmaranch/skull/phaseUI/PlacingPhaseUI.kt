@@ -67,6 +67,11 @@ fun PlacingPhaseUI(viewModel: GameViewModel, isPlacingFirstCard: Boolean = false
                 text = "Current Player: ${players[gameState.currentPlayerIndex].name}",
                 style = defaultTextStyle
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Number of cards placed: ${gameState.placedCards.size}",
+                style = defaultTextStyle,
+            )
         }
 
         Spacer(modifier = Modifier.height(20.dp))

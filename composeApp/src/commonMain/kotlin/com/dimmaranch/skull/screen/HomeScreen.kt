@@ -1,5 +1,6 @@
 package com.dimmaranch.skull.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -14,6 +15,10 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.viewmodel.GameViewModel
+import org.jetbrains.compose.resources.painterResource
+import skull.composeapp.generated.resources.Res
+import skull.composeapp.generated.resources.greenskull
+import skull.composeapp.generated.resources.redskull
 
 class HomeScreen(
     private val gameVM: GameViewModel
@@ -28,8 +33,16 @@ class HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Image(
+                painter = painterResource(Res.drawable.redskull),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
             Text(
-                text = "Skulls Game",
+                text = "Skull",
                 style = defaultTextStyle.copy(fontSize = 40.sp)
             )
 

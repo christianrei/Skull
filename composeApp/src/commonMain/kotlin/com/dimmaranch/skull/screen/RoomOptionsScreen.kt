@@ -1,11 +1,13 @@
 package com.dimmaranch.skull.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +27,10 @@ import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.commonUI.PlayerNameTextField
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.viewmodel.GameViewModel
+import org.jetbrains.compose.resources.painterResource
+import skull.composeapp.generated.resources.Res
+import skull.composeapp.generated.resources.greenskull
+import skull.composeapp.generated.resources.redskull
 
 class RoomOptionsScreen(
     private val gameVM: GameViewModel,
@@ -48,17 +54,13 @@ class RoomOptionsScreen(
                 areButtonsEnabled = Utils.isPlayerNameValid(playerId)
             }
 
-//        Image(
-//            painter = painterResource("drawable/title_logo.xml"),
-//            contentDescription = "SVG Image"
-//        )
-
-            Text(
-                text = "Skulls Game",
-                style = defaultTextStyle.copy(fontSize = 40.sp)
+            Image(
+                painter = painterResource(Res.drawable.greenskull),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
                 text = "Set your name then Create a room or Join a room by entering the host's code",

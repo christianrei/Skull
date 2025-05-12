@@ -63,35 +63,6 @@ object Utils {
         )
     }
 
-    fun Map<String, Any>.toGameState(): GameState {
-        val gameState = GameState(
-            roomCode = this["roomCode"] as String,
-            hostId = this["hostId"] as String,
-            canJoinRoom = this["doesRoomExist"] as Boolean,
-            noRoomMessage = this["showNoRoomMessage"] as String,
-            currentPlayerIndex = (this["currentPlayerIndex"] as? Int) ?: 0,
-            currentBidderIndex = (this["currentBidderIndex"] as? Int) ?: 0,
-            challengedPlayerIndex = (this["challengedPlayerIndex"] as? Int) ?: 0,
-            currentBid = (this["currentBid"] as? Int) ?: 0,
-            totalBids = (this["totalBids"] as? Int) ?: 0,
-            highestBid = (this["highestBid"] as? Int) ?: 0,
-            players = mapOf("player1" to Player(name = "cock")),
-            //players = (this["players"] as? Map<String, Any>){ it.toPlayer() } ?: emptyList<Player>(),
-            phase = Phase.valueOf((this["currentPhase"] as? String) ?: ""),
-            remainingCardsToReveal = (this["remainingCardsToReveal"] as? Int) ?: 0
-        )   // Deserialize into GameState
-        return gameState
-    }
-
-    fun Player.toMap(): Map<String, Any?> {
-        return mapOf(
-            "id" to id,
-            "name" to name,
-            "cards" to cardsInHand,
-            "bid" to bid
-        )
-    }
-
     fun List<Player>.toPlayerMap(): Map<String, Player> {
         return this.associateBy { it.id }
     }
@@ -120,11 +91,11 @@ object Utils {
         return when(playerIndex) {
             0 -> if (getSkull) { Res.drawable.blueskull } else if (getRose) { Res.drawable.bluerose } else { Res.drawable.blueback }
             1 -> if (getSkull) { Res.drawable.redskull } else if (getRose) { Res.drawable.redrose } else { Res.drawable.redback }
-            2 -> if (getSkull) { Res.drawable.greenskull } else if (getRose) { Res.drawable.greenrose } else { Res.drawable.greenback }
-            3 -> if (getSkull) { Res.drawable.brownskull } else if (getRose) { Res.drawable.brownrose } else { Res.drawable.brownback }
-            4 -> if (getSkull) { Res.drawable.pinkskull } else if (getRose) { Res.drawable.pinkrose } else { Res.drawable.pinkback }
-            5 -> if (getSkull) { Res.drawable.yellowskull } else if (getRose) { Res.drawable.yellowrose } else { Res.drawable.yellowback }
-            else -> Res.drawable.blueback
+            2 -> if (getSkull) { Res.drawable.brownskull } else if (getRose) { Res.drawable.brownrose } else { Res.drawable.brownback }
+            3 -> if (getSkull) { Res.drawable.pinkskull } else if (getRose) { Res.drawable.pinkrose } else { Res.drawable.pinkback }
+            4 -> if (getSkull) { Res.drawable.yellowskull } else if (getRose) { Res.drawable.yellowrose } else { Res.drawable.yellowback }
+            5 -> if (getSkull) { Res.drawable.greenskull } else if (getRose) { Res.drawable.greenrose } else { Res.drawable.greenback }
+            else -> if (getSkull) { Res.drawable.blueskull } else if (getRose) { Res.drawable.bluerose } else { Res.drawable.blueback }
         }
     }
 

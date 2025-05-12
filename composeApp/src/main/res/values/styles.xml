@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.NoActionBarLaunch" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#262051</item>
+        <item name="windowSplashScreenBackground">#262051</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
+        <item name="android:windowSplashScreenBackground">#262051</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
+        <item name="postSplashScreenTheme">@android:style/Theme.Material.Light.NoActionBar</item>
+    </style>
+</resources>

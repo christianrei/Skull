@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -35,7 +36,11 @@ class RulesScreen(
                 onClick = { onBackClicked() },
                 modifier = Modifier.padding(8.dp)
             ) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    tint = Color.White,
+                    contentDescription = "Back"
+                )
             }
 
             // Title
