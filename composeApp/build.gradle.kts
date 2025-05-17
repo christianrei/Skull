@@ -104,8 +104,6 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.korio)
             implementation(libs.ui.graphics) // Required for images
-//            implementation(libs.ui.svg) // SVG support
-//            implementation(libs.androidx.ui)
             implementation(libs.gitlive.firebase.database)
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.storage)
@@ -115,6 +113,7 @@ kotlin {
             implementation(libs.kamel.image)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+            implementation(libs.multiplatform.settings.no.arg)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.driver.ios)

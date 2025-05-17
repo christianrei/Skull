@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
+import com.russhwolf.settings.*
 
 class GameViewModel {
     private val logger = KotlinLogging.logger {}
@@ -42,6 +43,18 @@ class GameViewModel {
     private val _userNameState =
         MutableStateFlow(generateRandomCode())//TODO PUT BACK TO "" AFTER TESTING
     val userNameState: StateFlow<String> = _userNameState
+
+    private val settings: Settings = Settings()
+    private val LAST_GAME_ID_KEY = "last_game_id"
+
+    fun shouldRejoinGame(): Boolean {
+        val lastGameId = settings.getStringOrNull(LAST_GAME_ID_KEY)
+        if (lastGameId != null) {
+            println("Rejoining last game: $lastGameId")
+            observeGameState(lastGameId)
+        }
+        return lastGameId != null
+    }
 
     fun handleAction(action: GameAction) {
         _gameState.update { currentState ->
@@ -136,11 +149,14 @@ class GameViewModel {
             )
         }
         coroutineScope.launch {
+            settings.putString(LAST_GAME_ID_KEY, _gameState.value.roomCode) // Save for recovery
             repository.updateGameState(_gameState.value.roomCode, _gameState.value.toMap())
         }
     }
 
     fun joinGameRoom(gameCode: String) {
+        settings.putString(LAST_GAME_ID_KEY, gameCode) // Save for recovery
+
         // Create a player object with an id along with the name and add it to the room
         val playerId = _userNameState.value
         coroutineScope.launch {
@@ -369,9 +385,14 @@ class GameViewModel {
         }
 
         // Check if only one player remains → Declare winner
-        val nextPhase = if (updatedPlayers.size == 1) Phase.END else Phase.PLACING_FIRST_CARD
+        val nextPhase = if (updatedPlayers.size == 1) getPhaseEnd() else Phase.PLACING_FIRST_CARD
 
         return currentState.copy(players = updatedPlayers.toPlayerMap(), phase = nextPhase)
+    }
+
+    private fun getPhaseEnd(): Phase {
+        settings.remove(LAST_GAME_ID_KEY)
+        return Phase.END
     }
 
     private fun passTurn(): GameState {
@@ -436,6 +457,7 @@ class GameViewModel {
 
     fun clearGame() {
         coroutineScope.launch {
+            settings.remove(LAST_GAME_ID_KEY)
             repository.deleteGameData(gameState.value.roomCode)
             _gameState.value = GameState()
         }
@@ -525,7 +547,7 @@ class GameViewModel {
             // All roses revealed
             val updatedPlayers = game.players.values.map {
                 if (it.id == challenge.challengerId) {
-                    if (it.points == 1) return game.copy(phase = Phase.END)
+                    if (it.points == 1) return game.copy(phase = getPhaseEnd())
                     it.copy(points = it.points + 1)
                 } else it
             }.toPlayerMap()

@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.dimmaranch.skull.commonUI.LeaveGameButton
 import com.dimmaranch.skull.phaseUI.BiddingPhaseUI
 import com.dimmaranch.skull.phaseUI.ChallengingPhaseUI
 import com.dimmaranch.skull.phaseUI.LoseACardPhaseUI
@@ -23,6 +25,8 @@ class GameScreen(
     @Composable
     override fun Content() {
         val gameState: GameState by viewModel.gameState.collectAsState()
+
+        LeaveGameButton(gameVM = viewModel, navigator = LocalNavigator.current)
 
         val players = gameState.players.values.toList()
         val isCurrentUserTurn =
