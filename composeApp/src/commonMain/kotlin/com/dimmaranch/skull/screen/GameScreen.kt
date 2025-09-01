@@ -12,7 +12,6 @@ import com.dimmaranch.skull.phaseUI.ChallengingPhaseUI
 import com.dimmaranch.skull.phaseUI.LoseACardPhaseUI
 import com.dimmaranch.skull.phaseUI.PlacingPhaseUI
 import com.dimmaranch.skull.phaseUI.VictoryScreenUI
-import com.dimmaranch.skull.provideAdManager
 import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.state.GameState
 import com.dimmaranch.skull.state.Phase

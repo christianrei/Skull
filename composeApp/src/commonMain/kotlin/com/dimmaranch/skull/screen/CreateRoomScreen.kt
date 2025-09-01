@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.dimmaranch.skull.AdManager
-import com.dimmaranch.skull.PlatformActivity
 import com.dimmaranch.skull.commonUI.Theme.SecondaryText
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.GameState
