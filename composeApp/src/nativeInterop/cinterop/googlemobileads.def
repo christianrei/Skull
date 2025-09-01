@@ -1,0 +1,7 @@
+language = Objective-C
+package = googlemobileads
+
+headers = /Users/christianrei/Documents/Workspace/Skull/iosApp/Frameworks/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GoogleMobileAds.h
+
+compilerOpts = -F/Users/christianrei/Documents/Workspace/Skull/iosApp/Frameworks/GoogleMobileAds.xcframework/ios-arm64
+linkerOpts = -framework GoogleMobileAds -F/Users/christianrei/Documents/Workspace/Skull/iosApp/Frameworks/GoogleMobileAds.xcframework/ios-arm64

@@ -19,7 +19,7 @@ fun BiddingPhaseUI(viewModel: GameViewModel) {
     val players = gameState.players.values.toList()
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(vertical = 32.dp, horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize().padding(vertical = 54.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

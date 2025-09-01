@@ -17,7 +17,6 @@ import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.viewmodel.GameViewModel
 import org.jetbrains.compose.resources.painterResource
 import skull.composeapp.generated.resources.Res
-import skull.composeapp.generated.resources.greenskull
 import skull.composeapp.generated.resources.redskull
 
 class HomeScreen(

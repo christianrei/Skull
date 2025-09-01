@@ -1,6 +1,6 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -13,25 +13,6 @@ plugins {
 }
 
 kotlin {
-//    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64()
-//    iosX64() {
-//        binaries.framework {
-//            linkerOpts("-framework", "GoogleMobileAds")
-//        }
-//    }
-//    iosArm64() {
-//        binaries.framework {
-//            linkerOpts("-framework", "GoogleMobileAds")
-//        }
-//    }
-//    iosSimulatorArm64() {
-//        binaries.framework {
-//            linkerOpts("-framework", "GoogleMobileAds")
-//        }
-//    }
-
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
@@ -48,9 +29,18 @@ kotlin {
         target.binaries.framework {
             baseName = "ComposeApp"
             binaryOptions["bundleId"] = "com.dimmaranch.skull"
-            linkerOpts("-framework", "GoogleMobileAds")
+            linkerOpts(
+                "-framework", "GoogleMobileAds",
+                "-F${projectDir}/../iOSApp/Frameworks"
+            )
+            freeCompilerArgs += listOf("-Xobjc-generics")
             isStatic = true
             xcFramework.add(this)
+        }
+        target.compilations["main"].cinterops {
+            val googlemobileads by creating {
+                defFile(project.file("src/nativeInterop/cinterop/googlemobileads.def"))
+            }
         }
     }
     
@@ -85,7 +75,6 @@ kotlin {
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
             implementation(libs.components.resources)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.voyager.navigator)
@@ -141,8 +130,10 @@ android {
         }
     }
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {

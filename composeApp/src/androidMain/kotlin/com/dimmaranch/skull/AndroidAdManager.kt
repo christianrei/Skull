@@ -12,8 +12,8 @@ class AndroidAdManager(private val context: Context) : AdManager {
 
     override fun loadBannerAd() {
         val adView = AdView(context).apply {
-//            adSize = AdSize.BANNER
-            adUnitId = "ca-app-pub-xxxxxxxxxxxxxxxx/banner" // Replace with your Ad Unit ID
+            setAdSize(AdSize.BANNER)
+            adUnitId = "ca-app-pub-7734392100739377/8285858475" // Replace with your Ad Unit ID /banner?
         }
         val adContainer = (context as Activity).findViewById<FrameLayout>(androidx.core.R.id.text)//.adContainer)
         adContainer.addView(adView)
@@ -22,7 +22,8 @@ class AndroidAdManager(private val context: Context) : AdManager {
 
     override fun loadInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(context, "ca-app-pub-xxxxxxxxxxxxxxxx/interstitial", adRequest, object : InterstitialAdLoadCallback() {
+        // /interstitial needed?
+        InterstitialAd.load(context, "ca-app-pub-7734392100739377/5931173783", adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdLoaded(ad: InterstitialAd) {
                 interstitialAd = ad
             }

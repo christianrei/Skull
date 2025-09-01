@@ -56,16 +56,16 @@ fun VictoryScreenUI(
                     color = Color(0xFF444444)
                 )
 
-                players.forEach { player ->
-                    if (player == winner) {
-                        WinnerRow(name = player)
-                    } else {
-                        Text(
-                            text = player,
-                            fontSize = 20.sp,
-                            color = Color(0xFF666666)
-                        )
-                    }
+                // Winner always first
+                WinnerRow(name = winner)
+
+                // Other players below
+                players.filter { it != winner }.forEach { player ->
+                    Text(
+                        text = player,
+                        fontSize = 20.sp,
+                        color = Color(0xFF666666)
+                    )
                 }
             }
 
