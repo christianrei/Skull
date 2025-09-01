@@ -3,9 +3,7 @@ package com.dimmaranch.skull
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 
-expect class PlatformActivity
 expect fun getCustomFontFamily(): FontFamily
-expect fun provideAdManager(activity: PlatformActivity): AdManager
 expect fun getScreenWidth(): Int
 expect fun getScreenHeight(): Int
 @Composable

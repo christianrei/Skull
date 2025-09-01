@@ -3,13 +3,10 @@ package com.dimmaranch.skull
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.UIKit.UIViewController
 import androidx.compose.ui.text.platform.Font
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
 import platform.Foundation.*
-
-actual typealias PlatformActivity = UIViewController
 
 actual fun getCustomFontFamily(): FontFamily {
     val fontName = "dizzyedgeDEMO.ttf"
@@ -33,10 +30,6 @@ private fun NSData.toByteArray(): ByteArray {
         this@toByteArray.getBytes(it.addressOf(0), length.toULong())
     }
     return bytes
-}
-
-actual fun provideAdManager(activity: PlatformActivity): AdManager {
-    return IosAdManager()
 }
 
 @OptIn(ExperimentalForeignApi::class)

@@ -8,9 +8,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import android.app.Activity
 
-actual typealias PlatformActivity = Activity
 actual fun getCustomFontFamily(): FontFamily {
     return FontFamily(
         Font(
@@ -18,10 +16,6 @@ actual fun getCustomFontFamily(): FontFamily {
             weight = FontWeight.Normal,
         )
     )
-}
-
-actual fun provideAdManager(activity: PlatformActivity): AdManager {
-    return AndroidAdManager(activity)
 }
 
 actual fun getScreenWidth(): Int {
