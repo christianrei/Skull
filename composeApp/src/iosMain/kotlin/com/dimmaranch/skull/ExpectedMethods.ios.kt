@@ -9,6 +9,8 @@ import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
 import platform.Foundation.*
 
+actual typealias PlatformActivity = UIViewController
+
 actual fun getCustomFontFamily(): FontFamily {
     val fontName = "dizzyedgeDEMO.ttf"
 
@@ -33,7 +35,7 @@ private fun NSData.toByteArray(): ByteArray {
     return bytes
 }
 
-actual fun provideAdManager(): AdManager {
+actual fun provideAdManager(controller: PlatformActivity): AdManager {
     return IosAdManager(UIViewController())
 }
 

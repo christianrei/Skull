@@ -10,13 +10,32 @@ import com.dimmaranch.skull.commonUI.Theme.MidnightBlue
 import com.dimmaranch.skull.viewmodel.GameViewModel
 import platform.UIKit.UIViewController
 
-fun MainViewController(): UIViewController = ComposeUIViewController {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .background(MidnightBlue)
-    ) {
-        VoyagerAppNavigation(GameViewModel())
+//fun MainViewController(): UIViewController = ComposeUIViewController {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .statusBarsPadding()
+//            .background(MidnightBlue)
+//    ) {
+//        VoyagerAppNavigation(
+//            GameViewModel(),
+//            this@ComposeUIViewController
+//        )
+//    }
+//}
+
+fun MainViewController(): UIViewController {
+    return ComposeUIViewController { controller ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .background(MidnightBlue)
+        ) {
+            VoyagerAppNavigation(
+                GameViewModel(),
+                controller // <- this is now safe
+            )
+        }
     }
 }

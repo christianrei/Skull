@@ -2,6 +2,7 @@
 
 package com.dimmaranch.skull
 
+import androidx.compose.runtime.Composable
 import googlemobileads.*
 import googlemobileads.GADAdSize
 import platform.Foundation.NSError
@@ -21,6 +22,20 @@ class IosAdManager(private val viewController: UIViewController) : AdManager {
         //this.width = 320.0
         //this.height = 50.0
     }
+
+    @Composable
+    override fun BannerAd() {
+        // imperative call inside Composable
+        val vc = viewController
+        SideEffect {
+            val adView = GADBannerView(frame = platform.CoreGraphics.CGRectMake(0.0, 0.0, 320.0, 50.0))
+            adView.adUnitID = "ca-app-pub-xxxxxxxxxxxxxxxx/banner"
+            adView.rootViewController = vc
+            adView.loadRequest(GADRequest.request())
+            vc.view.addSubview(adView)
+        }
+    }
+
 
     override fun loadBannerAd() {
         val adView = GADBannerView(adSize = kGADAdSizeBanner)

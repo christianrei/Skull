@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.dimmaranch.skull.PlatformActivity
 import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.commonUI.Theme
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
@@ -40,6 +41,7 @@ import com.dimmaranch.skull.viewmodel.GameViewModel
 
 class JoinRoomScreen(
     private val viewModel: GameViewModel,
+    private val activity: PlatformActivity,
     private val onJoinRoom: (String) -> Unit,
     private val onUpdateRoomCodeInput: (String) -> Unit,
 ) : Screen {
@@ -58,7 +60,8 @@ class JoinRoomScreen(
                         viewModel,
                         onStartGame = {
                             viewModel.handleAction(GameAction.StartGame)
-                        }
+                        },
+                        activity = activity
                     )
                 )
             }

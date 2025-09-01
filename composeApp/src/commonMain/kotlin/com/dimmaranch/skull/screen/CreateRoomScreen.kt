@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.dimmaranch.skull.PlatformActivity
 import com.dimmaranch.skull.commonUI.Theme.SecondaryText
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.GameState
@@ -31,6 +32,7 @@ import com.dimmaranch.skull.viewmodel.GameViewModel
 
 class CreateRoomScreen(
     private val viewModel: GameViewModel,
+    private val activity: PlatformActivity,
     private val onStartGame: () -> Unit,
     private val playerName: String = "",
 ) : Screen {
@@ -51,7 +53,7 @@ class CreateRoomScreen(
                 navigator?.push(
                     GameScreen(
                         viewModel = viewModel,
-                        onEndGame = { navigator.push(HomeScreen(viewModel)) }
+                        onEndGame = { navigator.push(HomeScreen(viewModel, activity)) }
                     )
                 )
             }

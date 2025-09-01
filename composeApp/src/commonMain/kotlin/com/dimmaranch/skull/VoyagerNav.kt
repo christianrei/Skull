@@ -21,13 +21,16 @@ import com.dimmaranch.skull.state.isUserRoomHost
 import com.dimmaranch.skull.viewmodel.GameViewModel
 
 @Composable
-fun VoyagerAppNavigation(gameVM: GameViewModel) {
+fun VoyagerAppNavigation(
+    gameVM: GameViewModel,
+    activity: PlatformActivity
+) {
     gameVM.signInAnon()
     if (gameVM.shouldRejoinGame()) {
         val navigator = LocalNavigator.current
-        Navigator(GameScreen(gameVM, onEndGame = { navigator?.push(HomeScreen(gameVM)) }))
+        Navigator(GameScreen(gameVM, onEndGame = { navigator?.push(HomeScreen(gameVM, activity)) }))
     } else {
-        Navigator(HomeScreen(gameVM))
+        Navigator(HomeScreen(gameVM, activity))
     }
     //TODO Add bottom section ads for all screens except GameScreen
 }
