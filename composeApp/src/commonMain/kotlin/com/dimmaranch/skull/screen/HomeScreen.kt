@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.dimmaranch.skull.AdManager
 import com.dimmaranch.skull.PlatformActivity
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.provideAdManager
@@ -23,7 +24,7 @@ import skull.composeapp.generated.resources.redskull
 
 class HomeScreen(
     private val gameVM: GameViewModel,
-    private val activity: PlatformActivity
+    private val adManager: AdManager
 ) : Screen {
 
     @Composable
@@ -59,7 +60,7 @@ class HomeScreen(
                                 navigator.push(
                                     JoinRoomScreen(
                                         viewModel = gameVM,
-                                        activity = activity,
+                                        adManager = adManager,
                                         onJoinRoom = { roomCode ->
                                             gameVM.joinGameRoom(gameCode = roomCode)
                                         },
@@ -76,7 +77,7 @@ class HomeScreen(
                                         },
                                         playerName = playerName,
                                         viewModel = gameVM,
-                                        activity = activity
+                                        adManager = adManager,
                                     )
                                 )
                             })
@@ -113,7 +114,6 @@ class HomeScreen(
                 Text("Rules")
             }
 
-            val adManager = provideAdManager(activity)
             adManager.BannerAd()
         }
     }

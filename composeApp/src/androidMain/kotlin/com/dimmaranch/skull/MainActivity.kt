@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                         .statusBarsPadding()
                         .background(MidnightBlue)
                 ) {
-                    VoyagerAppNavigation(viewModel, this@MainActivity)
+                    VoyagerAppNavigation(viewModel, AndroidAdManager(this@MainActivity))
                 }
             }
         }

@@ -35,8 +35,8 @@ private fun NSData.toByteArray(): ByteArray {
     return bytes
 }
 
-actual fun provideAdManager(controller: PlatformActivity): AdManager {
-    return IosAdManager(UIViewController())
+actual fun provideAdManager(activity: PlatformActivity): AdManager {
+    return IosAdManager()
 }
 
 @OptIn(ExperimentalForeignApi::class)

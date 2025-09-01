@@ -25,7 +25,7 @@ import platform.UIKit.UIViewController
 //}
 
 fun MainViewController(): UIViewController {
-    return ComposeUIViewController { controller ->
+    return ComposeUIViewController {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -34,7 +34,7 @@ fun MainViewController(): UIViewController {
         ) {
             VoyagerAppNavigation(
                 GameViewModel(),
-                controller // <- this is now safe
+                IosAdManager()
             )
         }
     }

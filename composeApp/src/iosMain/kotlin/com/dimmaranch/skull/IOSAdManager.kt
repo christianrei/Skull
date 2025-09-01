@@ -10,9 +10,17 @@ import platform.UIKit.UIViewController
 import platform.CoreGraphics.CGSizeMake
 import kotlinx.cinterop.cValue
 import kotlinx.cinterop.CValue
+import platform.UIKit.UIApplication
 
 
-class IosAdManager(private val viewController: UIViewController) : AdManager {
+class IosAdManager() : AdManager {
+
+    // Store UIViewController internally
+    private val viewController: UIViewController by lazy {
+        // Grab the current key window's rootViewController
+        UIApplication.sharedApplication.keyWindow?.rootViewController
+            ?: UIViewController()
+    }
 
     private var interstitial: GADInterstitialAd? = null
     
@@ -25,22 +33,18 @@ class IosAdManager(private val viewController: UIViewController) : AdManager {
 
     @Composable
     override fun BannerAd() {
-        // imperative call inside Composable
         val vc = viewController
-        SideEffect {
-            val adView = GADBannerView(frame = platform.CoreGraphics.CGRectMake(0.0, 0.0, 320.0, 50.0))
-            adView.adUnitID = "ca-app-pub-xxxxxxxxxxxxxxxx/banner"
-            adView.rootViewController = vc
-            adView.loadRequest(GADRequest.request())
-            vc.view.addSubview(adView)
-        }
+        val adView = GADBannerView(frame = platform.CoreGraphics.CGRectMake(0.0, 0.0, 320.0, 50.0))
+        adView.adUnitID = "ca-app-pub-7734392100739377/7272382442"
+        adView.rootViewController = vc
+        adView.loadRequest(GADRequest.request())
+        vc.view.addSubview(adView)
     }
-
 
     override fun loadBannerAd() {
         val adView = GADBannerView(adSize = kGADAdSizeBanner)
 
-        adView.adUnitID = "ca-app-pub-xxxxxxxxxxxxxxxx/banner" // Replace with actual ID
+        adView.adUnitID = "ca-app-pub-7734392100739377/7272382442" // Replace with actual ID
         adView.rootViewController = viewController
 
         val request = GADRequest.request()
@@ -53,7 +57,7 @@ class IosAdManager(private val viewController: UIViewController) : AdManager {
     override fun loadInterstitialAd() {
         val request = GADRequest.request()
         GADInterstitialAd.loadWithAdUnitID(
-            "ca-app-pub-xxxxxxxxxxxxxxxx/interstitial", // Replace with actual ID
+            "ca-app-pub-7734392100739377/3647449312", // Replace with actual ID
             request,
             object : GADInterstitialAdLoadCompletionHandler {
                 override fun invoke(ad: GADInterstitialAd?, error: NSError?) {
