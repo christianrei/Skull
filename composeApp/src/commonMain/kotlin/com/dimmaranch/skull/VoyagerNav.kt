@@ -28,9 +28,8 @@ fun VoyagerAppNavigation(
     gameVM.signInAnon()
     if (gameVM.shouldRejoinGame()) {
         val navigator = LocalNavigator.current
-        Navigator(GameScreen(gameVM, onEndGame = { navigator?.push(HomeScreen(gameVM, adManager)) }))
+        Navigator(GameScreen(gameVM, onEndGame = { navigator?.push(HomeScreen(gameVM, adManager)) }, adManager))
     } else {
         Navigator(HomeScreen(gameVM, adManager))
     }
-    //TODO Add bottom section ads for all screens except GameScreen
 }

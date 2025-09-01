@@ -5,12 +5,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.dimmaranch.skull.AdManager
 import com.dimmaranch.skull.commonUI.LeaveGameButton
 import com.dimmaranch.skull.phaseUI.BiddingPhaseUI
 import com.dimmaranch.skull.phaseUI.ChallengingPhaseUI
 import com.dimmaranch.skull.phaseUI.LoseACardPhaseUI
 import com.dimmaranch.skull.phaseUI.PlacingPhaseUI
 import com.dimmaranch.skull.phaseUI.VictoryScreenUI
+import com.dimmaranch.skull.provideAdManager
 import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.state.GameState
 import com.dimmaranch.skull.state.Phase
@@ -19,14 +21,16 @@ import com.dimmaranch.skull.viewmodel.GameViewModel
 
 class GameScreen(
     private val viewModel: GameViewModel,
-    private val onEndGame: () -> Unit
+    private val onEndGame: () -> Unit,
+    private val adManager: AdManager,
 ) : Screen {
 
     @Composable
     override fun Content() {
         val gameState: GameState by viewModel.gameState.collectAsState()
+        adManager.loadInterstitialAd()
 
-        LeaveGameButton(gameVM = viewModel, navigator = LocalNavigator.current)
+        LeaveGameButton(gameVM = viewModel, navigator = LocalNavigator.current, adManager = adManager)
 
         val players = gameState.players.values.toList()
         val isCurrentUserTurn =
@@ -80,7 +84,7 @@ class GameScreen(
                 players.map { it.name },
                 players[gameState.currentPlayerIndex].name,
                 onEndGame = {
-                    //TODO Show gigantic full screen ad
+                    adManager.showInterstitialAd()
                     viewModel.clearGame()
                     onEndGame.invoke()
                 }

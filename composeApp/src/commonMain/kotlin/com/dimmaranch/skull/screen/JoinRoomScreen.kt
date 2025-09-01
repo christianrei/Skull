@@ -1,6 +1,7 @@
 package com.dimmaranch.skull.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,13 +32,11 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.dimmaranch.skull.AdManager
-import com.dimmaranch.skull.PlatformActivity
 import com.dimmaranch.skull.Utils
 import com.dimmaranch.skull.commonUI.Theme
 import com.dimmaranch.skull.commonUI.Theme.defaultTextStyle
 import com.dimmaranch.skull.state.GameAction
 import com.dimmaranch.skull.state.GameState
-import com.dimmaranch.skull.state.isUserRoomHost
 import com.dimmaranch.skull.viewmodel.GameViewModel
 
 class JoinRoomScreen(
@@ -74,41 +73,46 @@ class JoinRoomScreen(
             onUpdateRoomCodeInput(roomCode.value)
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Enter Your Friend's Room Code",
-                style = defaultTextStyle
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            CodeTextField(roomCode)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            val noRoomMessage = gameState.noRoomMessage
-            if (!noRoomMessage.isNullOrEmpty() && isJoinEnabled) {
-                Text(
-                    text = noRoomMessage,
-                    style = defaultTextStyle.copy(color = Color.Red, fontSize = 16.sp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    onJoinRoom(roomCode.value)
-                },
-                enabled = isJoinEnabled
+        Box {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Join Room")
+                Text(
+                    text = "Enter Your Friend's Room Code",
+                    style = defaultTextStyle
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                CodeTextField(roomCode)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                val noRoomMessage = gameState.noRoomMessage
+                if (!noRoomMessage.isNullOrEmpty() && isJoinEnabled) {
+                    Text(
+                        text = noRoomMessage,
+                        style = defaultTextStyle.copy(color = Color.Red, fontSize = 16.sp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        onJoinRoom(roomCode.value)
+                    },
+                    enabled = isJoinEnabled
+                ) {
+                    Text(text = "Join Room")
+                }
+            }
+            Column(modifier = Modifier.align(Alignment.BottomCenter)) {
+                adManager.BannerAd()
             }
         }
     }

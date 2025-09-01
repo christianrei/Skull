@@ -1,6 +1,7 @@
 package com.dimmaranch.skull.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,7 +55,8 @@ class CreateRoomScreen(
                 navigator?.push(
                     GameScreen(
                         viewModel = viewModel,
-                        onEndGame = { navigator.push(HomeScreen(viewModel, adManager)) }
+                        onEndGame = { navigator.push(HomeScreen(viewModel, adManager)) },
+                        adManager = adManager
                     )
                 )
             }
@@ -68,60 +70,65 @@ class CreateRoomScreen(
             viewModel.observeGameState()
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row {
+        Box {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row {
+                    Text(
+                        text = "Room Host: ",
+                        style = defaultTextStyle
+                    )
+                    Text(
+                        text = roomHostId ?: "WHO?", //get host with updated gameRoom
+                        style = defaultTextStyle.copy(color = SecondaryText)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row {
+                    Text(
+                        text = "Room Code: ",
+                        style = defaultTextStyle.copy(fontSize = 32.sp)
+                    )
+                    Text(
+                        text = roomCode,
+                        style = defaultTextStyle.copy(fontSize = 32.sp, color = SecondaryText)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 Text(
-                    text = "Room Host: ",
+                    text = "Players in the Room:",
                     style = defaultTextStyle
                 )
-                Text(
-                    text = roomHostId ?: "WHO?", //get host with updated gameRoom
-                    style = defaultTextStyle.copy(color = SecondaryText)
-                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                players.forEach {
+                    Text(
+                        text = it.name,
+                        style = defaultTextStyle.copy(color = SecondaryText)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = onStartGame,
+                    enabled = isStartEnabled
+                ) {
+                    Text(text = "Start Game")
+                }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row {
-                Text(
-                    text = "Room Code: ",
-                    style = defaultTextStyle.copy(fontSize = 32.sp)
-                )
-                Text(
-                    text = roomCode,
-                    style = defaultTextStyle.copy(fontSize = 32.sp, color = SecondaryText)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = "Players in the Room:",
-                style = defaultTextStyle
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            players.forEach {
-                Text(
-                    text = it.name,
-                    style = defaultTextStyle.copy(color = SecondaryText)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = onStartGame,
-                enabled = isStartEnabled
-            ) {
-                Text(text = "Start Game")
+            Column(modifier = Modifier.align(Alignment.BottomCenter)) {
+                adManager.BannerAd()
             }
         }
     }

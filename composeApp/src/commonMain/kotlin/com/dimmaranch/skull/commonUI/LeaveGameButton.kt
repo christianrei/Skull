@@ -20,10 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
+import com.dimmaranch.skull.AdManager
+import com.dimmaranch.skull.screen.HomeScreen
 import com.dimmaranch.skull.viewmodel.GameViewModel
 
 @Composable
-fun LeaveGameButton(gameVM: GameViewModel, navigator: Navigator?) {
+fun LeaveGameButton(
+    gameVM: GameViewModel,
+    navigator: Navigator?,
+    adManager: AdManager
+) {
     var showLeaveDialog by remember { mutableStateOf(false) }
 
     // Top-right "X" button
@@ -53,7 +59,8 @@ fun LeaveGameButton(gameVM: GameViewModel, navigator: Navigator?) {
                         onClick = {
                             showLeaveDialog = false
                             gameVM.clearGame()
-                            navigator?.pop()
+                            navigator?.popUntilRoot()
+                            navigator?.push(HomeScreen(gameVM, adManager = adManager))
                         }
                     ) {
                         Text("Yes")
