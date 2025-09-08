@@ -41,7 +41,7 @@ class GameViewModel {
     val gameState: StateFlow<GameState> = _gameState
 
     private val _userNameState =
-        MutableStateFlow(generateRandomCode())//TODO PUT BACK TO "" AFTER TESTING
+        MutableStateFlow("")//"" for Release, use generateRandomCode() for testing
     val userNameState: StateFlow<String> = _userNameState
 
     private val settings: Settings = Settings()

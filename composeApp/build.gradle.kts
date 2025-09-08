@@ -28,7 +28,8 @@ kotlin {
     ).forEach { target ->
         target.binaries.framework {
             baseName = "ComposeApp"
-            binaryOptions["bundleId"] = "com.dimmaranch.skull"
+            // Give a unique bundle ID for the framework (not the app)
+            binaryOptions["bundleId"] = "com.dimmaranch.composeapp.framework"
             linkerOpts(
                 "-framework", "GoogleMobileAds",
                 "-F${projectDir}/../iOSApp/Frameworks"

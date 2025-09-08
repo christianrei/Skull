@@ -44,7 +44,7 @@ enum class PlayerAction { PLACE_ROSE, PLACE_SKULL, START_BIDDING }
 @Serializable
 data class GameState(
     //Room values
-    val roomCode: String = Utils.generateRandomCode(),//TODO PUT BACK TO FOR RELEASE"",
+    val roomCode: String = "",// "" for Release, Use Utils.generateRandomCode() for testing,
     val hostId: String? = null,
     val canJoinRoom: Boolean = false,
     val noRoomMessage: String? = null,
